@@ -12,7 +12,7 @@ export default function Fixture() {
 
   useEffect(() => {
     setLoading(true);
-    fetch("https://sheetdb.io/api/v1/lt90klvu5x2dd")
+    fetch("https://sheetdb.io/api/v1/5zln5s6q75lim")
       .then((response) => response.json())
       .then((data) => {
         const filteredData = data.filter((item) => item.FIXTURE === label);
