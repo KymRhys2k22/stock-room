@@ -37,10 +37,11 @@ export default function App() {
               : parseInt(item.QTY) > 0
               ? "yellow"
               : "red",
-          image: `https://jpbulk.daisonet.com/cdn/shop/products/${item.SKU}_10_700x.jpg`,
+          image: `https://jpbulk.daisonet.com/cdn/shop/products/${item.UPC}_10_700x.jpg`,
         }));
         setProducts(mappedProducts.reverse());
         setLoading(false);
+        console.log(mappedProducts.SKU);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -71,7 +72,7 @@ export default function App() {
 
         {/* Product List */}
         <div className="space-y-3">
-          <CloudinaryImageUploader />
+          {products.SKU}
           {loading ? (
             <>
               <SkeletonLoader />

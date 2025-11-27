@@ -4,6 +4,7 @@ import "./index.css";
 import App from "./App.jsx";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Fixture from "./Fixture.jsx";
+import UploadImage from "./UploadImage.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -11,6 +12,7 @@ createRoot(document.getElementById("root")).render(
       <Routes>
         <Route path="/" element={<App />} />
         <Route path="/fixtures/:label" element={<Fixture />} />
+        <Route path="/upload-image" element={<UploadImage />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>

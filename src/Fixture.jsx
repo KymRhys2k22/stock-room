@@ -39,7 +39,7 @@ export default function Fixture() {
               : parseInt(item.QTY) > 0
               ? "yellow"
               : "red",
-          image: `https://jpbulk.daisonet.com/cdn/shop/products/${item.SKU}_10_700x.jpg`,
+          image: `https://jpbulk.daisonet.com/cdn/shop/products/${item.UPC}_10_700x.jpg`,
         }));
         setProducts(mappedProducts.reverse());
         setLoading(false);

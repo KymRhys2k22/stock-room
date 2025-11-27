@@ -16,7 +16,7 @@ export default function ProductCard({ product, onClick }) {
             className="w-full h-full object-cover mix-blend-multiply"
             onError={(e) => {
               e.target.onerror = null;
-              e.target.src = "https://placehold.co/600x400?text=No+Image";
+              e.target.src = `https://res.cloudinary.com/dqtldfxeh/image/upload/products/${product.upc}.jpg`;
             }}
           />
         </div>
