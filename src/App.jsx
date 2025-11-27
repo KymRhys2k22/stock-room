@@ -6,6 +6,7 @@ import SearchBar from "./components/SearchBar";
 import ProductCard from "./components/ProductCard";
 import ProductModal from "./components/ProductModal";
 import SkeletonLoader from "./components/SkeletonLoader";
+import CloudinaryImageUploader from "./components/CloudinaryImageUploader";
 
 export default function App() {
   const [products, setProducts] = useState([]);
@@ -70,6 +71,7 @@ export default function App() {
 
         {/* Product List */}
         <div className="space-y-3">
+          <CloudinaryImageUploader />
           {loading ? (
             <>
               <SkeletonLoader />
