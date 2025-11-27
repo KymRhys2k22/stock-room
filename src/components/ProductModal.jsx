@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { X } from "lucide-react";
 import { getStatusColor } from "../utils/helpers";
 
 export default function ProductModal({ product, onClose }) {
+  const [imageLoaded, setImageLoaded] = useState(false);
+
   if (!product) return null;
 
   return (
@@ -19,16 +21,25 @@ export default function ProductModal({ product, onClose }) {
         </button>
 
         <div className="h-64 bg-gray-200 flex items-center justify-center relative">
+          {!imageLoaded && (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-full h-full bg-gray-300 animate-pulse"></div>
+            </div>
+          )}
           <img
             src={product.image}
             alt={product.name}
             loading="lazy"
             decoding="async"
-            className="w-full h-full object-contain mix-blend-multiply p-4"
+            className={`w-full h-full object-cover mix-blend-multiply p-4 transition-opacity duration-300 ${
+              imageLoaded ? "opacity-100" : "opacity-0"
+            }`}
+            onLoad={() => setImageLoaded(true)}
             onError={(e) => {
               e.target.onerror = null;
               e.target.src =
                 "https://placehold.co/600x400?text=Click+to+Upload+Image";
+              setImageLoaded(true);
             }}
           />
         </div>
