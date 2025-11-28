@@ -8,12 +8,15 @@ import ProductModal from "./components/ProductModal";
 import SkeletonLoader from "./components/SkeletonLoader";
 import CloudinaryImageUploader from "./components/CloudinaryImageUploader";
 
+import Filter from "./components/Filter";
+
 export default function App() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   const [searchQuery, setSearchQuery] = useState("");
+  const [sortOrder, setSortOrder] = useState("default");
 
   useEffect(() => {
     setLoading(true);
@@ -48,26 +51,40 @@ export default function App() {
       });
   }, []);
 
-  const filteredProducts = products.filter((product) => {
-    const query = searchQuery.toLowerCase();
-    return (
-      product.name.toLowerCase().includes(query) ||
-      product.sku.toLowerCase().includes(query) ||
-      product.upc.toLowerCase().includes(query) ||
-      (product.fixture && product.fixture.toLowerCase().includes(query))
-    );
-  });
+  const filteredProducts = products
+    .filter((product) => {
+      const query = searchQuery.toLowerCase();
+      return (
+        product.name.toLowerCase().includes(query) ||
+        product.sku.toLowerCase().includes(query) ||
+        product.upc.toLowerCase().includes(query) ||
+        (product.fixture && product.fixture.toLowerCase().includes(query))
+      );
+    })
+    .sort((a, b) => {
+      if (sortOrder === "price-asc") {
+        return a.price - b.price;
+      } else if (sortOrder === "price-desc") {
+        return b.price - a.price;
+      }
+      return 0;
+    });
 
   return (
     <div className="min-h-screen bg-gray-50 font-sans text-gray-900 pb-24">
       <Header title="Stock Room Management System" />
 
       <div className="px-4 pt-4 md:px-96 space-y-4">
-        <SearchBar
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-          placeholder="Search by name, SKU, UPC, or Fixture..."
-        />
+        <div className="flex gap-2">
+          <div className="flex-1">
+            <SearchBar
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              placeholder="Search..."
+            />
+          </div>
+          <Filter sortOrder={sortOrder} setSortOrder={setSortOrder} />
+        </div>
 
         {/* Product List */}
         <div className="space-y-3">

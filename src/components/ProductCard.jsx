@@ -17,7 +17,7 @@ export default function ProductCard({ product, onClick }) {
     } else if (fallbackAttempt === 1) {
       // Second fallback: show placeholder
       setFallbackAttempt(2);
-      setImgSrc("https://placehold.co/600x400/e2e8f0/94a3b8?text=No+Image");
+      setImgSrc("https://placehold.co/400x200/e2e8f0/94a3b8?text=No+Image");
       setImageLoaded(true); // Placeholder is always "loaded"
     }
   };
