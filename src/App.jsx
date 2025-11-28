@@ -60,7 +60,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-gray-50 font-sans text-gray-900 pb-24">
-      <Header title="Stock Room 202" />
+      <Header title="Stock Room Management System" />
 
       <div className="px-4 pt-4 md:px-96 space-y-4">
         <SearchBar
