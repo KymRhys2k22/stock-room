@@ -73,11 +73,17 @@ export default function Fixture() {
         {/* Product List */}
         <main className="space-y-3">
           {loading ? (
-            <SkeletonLoader />
+            <>
+              <SkeletonLoader />
+              <SkeletonLoader />
+              <SkeletonLoader />
+              <SkeletonLoader />
+              <SkeletonLoader />
+            </>
           ) : (
             filteredProducts.map((product) => (
               <ProductCard
-                key={product.id}
+                key={selectedProduct?.id}
                 product={product}
                 onClick={() => setSelectedProduct(product)}
               />

@@ -1,23 +1,47 @@
-import React from "react";
+import React, { useState } from "react";
 import { getStatusColor } from "../utils/helpers";
 
 export default function ProductCard({ product, onClick }) {
+  const [imgSrc, setImgSrc] = useState(product.image);
+  const [fallbackAttempt, setFallbackAttempt] = useState(0);
+  const [imageLoaded, setImageLoaded] = useState(false);
+
+  const handleImageError = () => {
+    if (fallbackAttempt === 0) {
+      // First fallback: try Cloudinary
+      setFallbackAttempt(1);
+      setImageLoaded(false);
+      setImgSrc(
+        `https://res.cloudinary.com/dqtldfxeh/image/upload/products/${product.upc}`
+      );
+    } else if (fallbackAttempt === 1) {
+      // Second fallback: show placeholder
+      setFallbackAttempt(2);
+      setImgSrc("https://placehold.co/600x400/e2e8f0/94a3b8?text=No+Image");
+      setImageLoaded(true); // Placeholder is always "loaded"
+    }
+  };
+
   return (
     <section className="bg-white rounded-xl p-4 shadow-sm">
       <section className="flex gap-4">
         <div
-          className="w-20 h-20 bg-gray-200 rounded-lg overflow-hidden flex-shrink-0 cursor-pointer"
+          className="w-20 h-20 bg-gray-200 rounded-lg overflow-hidden flex-shrink-0 cursor-pointer relative"
           onClick={onClick}>
+          {/* Loading animation */}
+          {!imageLoaded && (
+            <div className="absolute inset-0 bg-gray-300 animate-pulse"></div>
+          )}
           <img
-            src={product.image}
-            alt={product.name}
+            src={imgSrc}
+            alt=""
             loading="lazy"
             decoding="async"
-            className="w-full h-full object-cover mix-blend-multiply"
-            onError={(e) => {
-              e.target.onerror = null;
-              e.target.src = `https://res.cloudinary.com/dqtldfxeh/image/upload/products/${product.upc}.jpg`;
-            }}
+            className={`w-full h-full object-cover mix-blend-multiply ${
+              imageLoaded ? "opacity-100" : "opacity-0"
+            }`}
+            onLoad={() => setImageLoaded(true)}
+            onError={handleImageError}
           />
         </div>
         <div className="flex-1 min-w-0">

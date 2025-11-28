@@ -41,7 +41,6 @@ export default function App() {
         }));
         setProducts(mappedProducts.reverse());
         setLoading(false);
-        console.log(mappedProducts.SKU);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -63,7 +62,7 @@ export default function App() {
     <div className="min-h-screen bg-gray-50 font-sans text-gray-900 pb-24">
       <Header title="Stock Room 202" />
 
-      <div className="px-4 pt-4 lg:px-96 space-y-4">
+      <div className="px-4 pt-4 md:px-96 space-y-4">
         <SearchBar
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
@@ -72,7 +71,6 @@ export default function App() {
 
         {/* Product List */}
         <div className="space-y-3">
-          {products.SKU}
           {loading ? (
             <>
               <SkeletonLoader />
@@ -98,6 +96,7 @@ export default function App() {
 
       {/* Product Details Modal */}
       <ProductModal
+        key={selectedProduct?.id}
         product={selectedProduct}
         onClose={() => setSelectedProduct(null)}
       />
