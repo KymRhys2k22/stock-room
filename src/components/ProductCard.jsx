@@ -17,7 +17,9 @@ export default function ProductCard({ product, onClick }) {
     } else if (fallbackAttempt === 1) {
       // Second fallback: show placeholder
       setFallbackAttempt(2);
-      setImgSrc("https://placehold.co/400x200/e2e8f0/94a3b8?text=No+Image");
+      setImgSrc(
+        "https://placehold.co/600x400/e2e8f0/94a3b8?text=Upload+\n+Image"
+      );
       setImageLoaded(true); // Placeholder is always "loaded"
     }
   };
@@ -54,7 +56,7 @@ export default function ProductCard({ product, onClick }) {
             </span>
           </div>
           <div className="text-xs text-gray-500 space-y-0.5 mt-0.5">
-            <p className="font-medium text-blue-600">{product.department}</p>
+            <p className="font-medium text-pink-500">{product.department}</p>
             <p>SKU: {product.sku}</p>
             <p>UPC: {product.upc}</p>
             {product.fixture && <p>Fixture: {product.fixture}</p>}

@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Plus } from "lucide-react";
+
 import FAB from "./components/FAB";
 import Header from "./components/Header";
 import SearchBar from "./components/SearchBar";
 import ProductCard from "./components/ProductCard";
 import ProductModal from "./components/ProductModal";
 import SkeletonLoader from "./components/SkeletonLoader";
-import CloudinaryImageUploader from "./components/CloudinaryImageUploader";
-
-import Filter from "./components/Filter";
 
 export default function App() {
   const [products, setProducts] = useState([]);
@@ -66,13 +63,21 @@ export default function App() {
         return a.price - b.price;
       } else if (sortOrder === "price-desc") {
         return b.price - a.price;
+      } else if (sortOrder === "quantity-asc") {
+        return a.quantity - b.quantity;
+      } else if (sortOrder === "quantity-desc") {
+        return b.quantity - a.quantity;
       }
       return 0;
     });
 
   return (
     <div className="min-h-screen bg-gray-50 font-sans text-gray-900 pb-24">
-      <Header title="Stock Room Management System" />
+      <Header
+        title="Daiso Japan Stock Room Management System"
+        sortOrder={sortOrder}
+        setSortOrder={setSortOrder}
+      />
 
       <div className="px-4 pt-4 md:px-96 space-y-4">
         <div className="flex gap-2">
@@ -83,7 +88,6 @@ export default function App() {
               placeholder="Search..."
             />
           </div>
-          <Filter sortOrder={sortOrder} setSortOrder={setSortOrder} />
         </div>
 
         {/* Product List */}

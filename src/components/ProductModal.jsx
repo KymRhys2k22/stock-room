@@ -123,7 +123,7 @@ export default function ProductModal({ product, onClose }) {
                   disabled={uploading}
                   className="hidden"
                 />
-                <div className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-lg">
+                <div className="flex items-center gap-2 px-6 py-3 bg-pink-500 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-lg">
                   {uploading ? (
                     <>
                       <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
@@ -153,7 +153,7 @@ export default function ProductModal({ product, onClose }) {
             <h2 className="text-2xl font-bold text-slate-900 leading-tight">
               {product.name}
             </h2>
-            <p className="text-3xl font-bold text-blue-600 mt-2">
+            <p className="text-3xl font-bold text-pink-500 mt-2">
               ₱{product.price.toFixed(2)}
             </p>
           </div>
@@ -179,7 +179,7 @@ export default function ProductModal({ product, onClose }) {
               <p className="text-xs text-gray-500 uppercase tracking-wider font-semibold">
                 Department
               </p>
-              <p className="text-base font-medium text-blue-600">
+              <p className="text-base font-medium text-pink-500">
                 {product.department}
               </p>
             </div>

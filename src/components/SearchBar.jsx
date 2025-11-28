@@ -13,7 +13,7 @@ export default function SearchBar({
       </div>
       <input
         type="text"
-        className="block w-full pl-10 pr-3 py-3 border-none rounded-xl bg-white shadow-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="block w-full pl-10 pr-3 py-3 border-none rounded-xl bg-white shadow-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-500"
         placeholder={placeholder}
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}

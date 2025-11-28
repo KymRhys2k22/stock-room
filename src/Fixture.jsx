@@ -8,8 +8,6 @@ import ProductCard from "./components/ProductCard";
 import ProductModal from "./components/ProductModal";
 import SkeletonLoader from "./components/SkeletonLoader";
 
-import Filter from "./components/Filter";
-
 export default function Fixture() {
   const { label } = useParams();
   const [products, setProducts] = useState([]);
@@ -67,13 +65,22 @@ export default function Fixture() {
         return a.price - b.price;
       } else if (sortOrder === "price-desc") {
         return b.price - a.price;
+      } else if (sortOrder === "quantity-asc") {
+        return a.quantity - b.quantity;
+      } else if (sortOrder === "quantity-desc") {
+        return b.quantity - a.quantity;
       }
       return 0;
     });
 
   return (
-    <div className="min-h-screen bg-gray-50 font-sans text-gray-900 pb-96">
-      <Header headerText="FIXTURE" title={label} />
+    <div className="min-h-screen bg-gray-50 font-sans text-gray-900 pb-24">
+      <Header
+        headerText="FIXTURE"
+        title={label}
+        sortOrder={sortOrder}
+        setSortOrder={setSortOrder}
+      />
 
       <div className="px-4 pt-4 lg:px-96 space-y-4">
         <div className="flex gap-2">
@@ -84,7 +91,6 @@ export default function Fixture() {
               placeholder="Search..."
             />
           </div>
-          <Filter sortOrder={sortOrder} setSortOrder={setSortOrder} />
         </div>
 
         {/* Product List */}
