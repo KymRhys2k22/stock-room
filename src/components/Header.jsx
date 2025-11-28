@@ -24,7 +24,7 @@ export default function Header({ title, headerText, sortOrder, setSortOrder }) {
 
   const text = title;
   return (
-    <header className="flex lg:px-96 items-center justify-between px-4 py-4 bg-gray-50 sticky top-0 z-10">
+    <header className="flex lg:px-96 md:px-10 items-center justify-between px-4 py-4 bg-gray-50 sticky top-0 z-10">
       <Menu className="w-6 h-6 text-slate-900" />
       <h1 className="text-xl text-center font-bold text-slate-900 pl-2">
         {headerText} {text}

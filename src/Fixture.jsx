@@ -82,7 +82,7 @@ export default function Fixture() {
         setSortOrder={setSortOrder}
       />
 
-      <div className="px-4 pt-4 lg:px-96 space-y-4">
+      <div className="px-4 pt-4 md:px-10   lg:px-96 space-y-4">
         <div className="flex gap-2">
           <div className="flex-1">
             <SearchBar
