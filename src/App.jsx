@@ -22,23 +22,25 @@ export default function App() {
     )
       .then((response) => response.json())
       .then((data) => {
-        const mappedProducts = data.map((item, index) => ({
-          id: index,
-          name: item.DESCRITION,
-          sku: item.SKU,
-          upc: item.UPC,
-          price: parseFloat(item.PRICE),
-          quantity: parseInt(item.QTY),
-          department: item.DEPARTMENT,
-          fixture: item.FIXTURE,
-          status:
-            parseInt(item.QTY) > 10
-              ? "green"
-              : parseInt(item.QTY) > 0
-              ? "yellow"
-              : "red",
-          image: `https://jpbulk.daisonet.com/cdn/shop/products/${item.UPC}_10_700x.jpg`,
-        }));
+        const mappedProducts = data
+          .filter((item) => item.UPC && item.DESCRITION) // Filter out empty rows
+          .map((item, index) => ({
+            id: index,
+            name: item.DESCRITION,
+            sku: item.SKU,
+            upc: item.UPC,
+            price: parseFloat(item.PRICE),
+            quantity: parseInt(item.QTY),
+            department: item.DEPARTMENT,
+            fixture: item.FIXTURE,
+            status:
+              parseInt(item.QTY) > 10
+                ? "green"
+                : parseInt(item.QTY) > 0
+                ? "yellow"
+                : "red",
+            image: `https://jpbulk.daisonet.com/cdn/shop/products/${item.UPC}_10_700x.jpg`,
+          }));
         setProducts(mappedProducts.reverse());
         setLoading(false);
       })
@@ -79,7 +81,7 @@ export default function App() {
         setSortOrder={setSortOrder}
       />
 
-      <div className="px-4 pt-4 md:px-6 lg:px-96 space-y-4">
+      <div className="px-4 pt-4 md:px-10 lg:px-96 space-y-4">
         <div className="flex gap-2">
           <div className="flex-1">
             <SearchBar

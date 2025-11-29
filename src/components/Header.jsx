@@ -1,21 +1,27 @@
 import React from "react";
-import { ListFilter, Menu } from "lucide-react";
+import { ListFilter, Menu, Home, Upload } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function Header({ title, headerText, sortOrder, setSortOrder }) {
   const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const dropdownRef = React.useRef(null);
+  const menuRef = React.useRef(null);
 
   React.useEffect(() => {
     function handleClickOutside(event) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsDropdownOpen(false);
       }
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setIsMenuOpen(false);
+      }
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [dropdownRef]);
+  }, [dropdownRef, menuRef]);
 
   const handleSortChange = (value) => {
     setSortOrder(value);
@@ -25,7 +31,33 @@ export default function Header({ title, headerText, sortOrder, setSortOrder }) {
   const text = title;
   return (
     <header className="flex lg:px-96 md:px-10 items-center justify-between px-4 py-4 bg-gray-50 sticky top-0 z-10">
-      <Menu className="w-6 h-6 text-slate-900" />
+      <div className="relative" ref={menuRef}>
+        <button
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          className="focus:outline-none flex items-center">
+          <Menu className="w-7 h-7 text-slate-900" />
+        </button>
+
+        {isMenuOpen && (
+          <div className="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20 ring-1 ring-black ring-opacity-5">
+            <Link
+              to="/"
+              onClick={() => setIsMenuOpen(false)}
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2">
+              <Home className="w-4 h-4" />
+              HOME
+            </Link>
+            <Link
+              to="/upload-image"
+              onClick={() => setIsMenuOpen(false)}
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2">
+              <Upload className="w-4 h-4" />
+              UPLOAD IMAGE
+            </Link>
+          </div>
+        )}
+      </div>
+
       <h1 className="text-xl text-center font-bold text-slate-900 pl-2">
         {headerText} {text}
       </h1>
