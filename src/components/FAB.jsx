@@ -7,7 +7,7 @@ const APPS_SCRIPT_URL =
 const DATA_URL =
   "https://opensheet.elk.sh/1sZuuC4o44rh-yRYaeeRFRo4HeOhMj6x6y4ux96D5nok/Master";
 
-export default function FAB() {
+export default function FAB({ defaultFixture }) {
   const [isOpen, setIsOpen] = useState(false);
   const [mode, setMode] = useState("create"); // 'create' or 'update'
   const [items, setItems] = useState([]);
@@ -17,9 +17,16 @@ export default function FAB() {
 
   const [formData, setFormData] = useState({
     upc: "",
-    fixture: "",
+    fixture: defaultFixture || "",
     qty: "",
   });
+
+  // Update fixture if defaultFixture changes
+  useEffect(() => {
+    if (defaultFixture) {
+      setFormData((prev) => ({ ...prev, fixture: defaultFixture }));
+    }
+  }, [defaultFixture]);
 
   // Fetch data on mount
   useEffect(() => {
@@ -162,7 +169,7 @@ export default function FAB() {
 
       if (result.status === "success") {
         setMessage(`Success: ${result.message}`);
-        setFormData({ upc: "", fixture: "", qty: "" });
+        setFormData({ upc: "", fixture: defaultFixture || "", qty: "" });
         setUploadSuccess(null); // Reset upload status
         if (action === "delete") setIsOpen(false);
         fetchData(); // Reload data
@@ -185,7 +192,7 @@ export default function FAB() {
     setMode(modeType);
     setIsOpen(true);
     setMessage("");
-    setFormData({ upc: "", fixture: "", qty: "" });
+    setFormData({ upc: "", fixture: defaultFixture || "", qty: "" });
   };
 
   return (
@@ -254,7 +261,12 @@ export default function FAB() {
                   name="fixture"
                   value={formData.fixture}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500"
+                  disabled={!!defaultFixture}
+                  className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500 ${
+                    defaultFixture
+                      ? "bg-gray-100 text-gray-500 cursor-not-allowed"
+                      : ""
+                  }`}
                   placeholder="e.g. C1"
                 />
               </div>

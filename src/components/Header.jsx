@@ -43,14 +43,14 @@ export default function Header({ title, headerText, sortOrder, setSortOrder }) {
             <Link
               to="/"
               onClick={() => setIsMenuOpen(false)}
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2">
+              className="flex px-4 py-2 text-sm text-gray-700 hover:bg-gray-100  items-center gap-2">
               <Home className="w-4 h-4" />
               HOME
             </Link>
             <Link
               to="/upload-image"
               onClick={() => setIsMenuOpen(false)}
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2">
+              className="flex px-4 py-2 text-sm text-gray-700 hover:bg-gray-100  items-center gap-2">
               <Upload className="w-4 h-4" />
               UPLOAD IMAGE
             </Link>

@@ -116,7 +116,7 @@ export default function Fixture() {
       </div>
 
       {/* Floating Action Button */}
-      <FAB />
+      <FAB defaultFixture={label} />
 
       {/* Product Details Modal */}
       <ProductModal
