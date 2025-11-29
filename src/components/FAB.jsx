@@ -9,7 +9,7 @@ const DATA_URL =
 
 export default function FAB({ defaultFixture }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [mode, setMode] = useState("create"); // 'create' or 'update'
+  // Mode is always 'create' now
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -55,34 +55,14 @@ export default function FAB({ defaultFixture }) {
     const currentFixture = name === "fixture" ? value : formData.fixture;
 
     // CREATE MODE: Warn if duplicate
-    if (mode === "create" && currentUpc && currentFixture) {
+    if (currentUpc && currentFixture) {
       const existing = items.find(
         (item) => item.UPC === currentUpc && item.FIXTURE === currentFixture
       );
       if (existing) {
-        setMessage("This UPC is already in this Fixture. Switch to Update?");
+        setMessage("This UPC is already in this Fixture.");
       } else {
         setMessage("");
-      }
-    }
-
-    // UPDATE/DELETE MODE: Auto-fill if UPC is typed and unique
-    if (mode === "update" && name === "upc" && value) {
-      const matches = items.filter((item) => item.UPC === value);
-      if (matches.length === 1) {
-        // Unique match found, auto-fill
-        setFormData((prev) => ({
-          ...prev,
-          fixture: matches[0].FIXTURE || "",
-          qty: matches[0].QTY || "",
-        }));
-        setMessage("Item found. Details auto-filled.");
-      } else if (matches.length > 1) {
-        setMessage(
-          `Found ${matches.length} items with this UPC. Please specify Fixture.`
-        );
-      } else {
-        setMessage("UPC not found in local list.");
       }
     }
   };
@@ -140,7 +120,7 @@ export default function FAB({ defaultFixture }) {
     }
   };
 
-  const handleSubmit = async (action) => {
+  const handleSubmit = async () => {
     if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL === "YOUR_APPS_SCRIPT_URL_HERE") {
       alert("Please configure the APPS_SCRIPT_URL in FAB.jsx");
       return;
@@ -150,16 +130,12 @@ export default function FAB({ defaultFixture }) {
     setMessage("");
 
     try {
-      // Use URLSearchParams for application/x-www-form-urlencoded
-      // This is often more reliable for Apps Script than raw JSON
       const formDataParams = new URLSearchParams();
-      formDataParams.append("action", action);
+      formDataParams.append("action", "create");
       formDataParams.append("upc", formData.upc);
       formDataParams.append("fixture", formData.fixture);
       formDataParams.append("qty", formData.qty);
 
-      // Use no-cors if needed, but for JSON response we need cors.
-      // Apps Script Web App should be deployed as "Anyone" to support CORS.
       const res = await fetch(APPS_SCRIPT_URL, {
         method: "POST",
         body: formDataParams,
@@ -171,11 +147,7 @@ export default function FAB({ defaultFixture }) {
         setMessage(`Success: ${result.message}`);
         setFormData({ upc: "", fixture: defaultFixture || "", qty: "" });
         setUploadSuccess(null); // Reset upload status
-        if (action === "delete") setIsOpen(false);
         fetchData(); // Reload data
-        // Optionally trigger a global reload if needed, but this component manages its own list for now
-        // To update the main App list, we'd need a callback prop or context.
-        // For now, we reload the page to reflect changes in the main list if desired:
         window.location.reload();
       } else {
         setMessage(`Error: ${result.message}`);
@@ -188,8 +160,7 @@ export default function FAB({ defaultFixture }) {
     }
   };
 
-  const openModal = (modeType = "create") => {
-    setMode(modeType);
+  const openModal = () => {
     setIsOpen(true);
     setMessage("");
     setFormData({ upc: "", fixture: defaultFixture || "", qty: "" });
@@ -198,7 +169,7 @@ export default function FAB({ defaultFixture }) {
   return (
     <>
       <button
-        onClick={() => openModal("create")}
+        onClick={openModal}
         className="fixed bottom-6 md:bottom-10 right-6 md:right-10 w-14 h-14 bg-pink-500 rounded-full shadow-lg flex items-center justify-center text-white hover:bg-pink-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-600 z-40">
         <Plus className="w-8 h-8" />
       </button>
@@ -213,29 +184,8 @@ export default function FAB({ defaultFixture }) {
             </button>
 
             <h2 className="text-2xl font-bold mb-4 text-gray-800">
-              {mode === "create" ? "Add New Item" : "Update / Delete Item"}
+              Add New Item
             </h2>
-
-            <div className="flex gap-2 mb-4">
-              <button
-                onClick={() => setMode("create")}
-                className={`flex-1 py-2 text-sm font-medium rounded-md ${
-                  mode === "create"
-                    ? "bg-pink-100 text-pink-700 border border-pink-200"
-                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                }`}>
-                Create
-              </button>
-              <button
-                onClick={() => setMode("update")}
-                className={`flex-1 py-2 text-sm font-medium rounded-md ${
-                  mode === "update"
-                    ? "bg-blue-100 text-blue-700 border border-blue-200"
-                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                }`}>
-                Update / Delete
-              </button>
-            </div>
 
             <div className="space-y-4">
               <div>
@@ -331,51 +281,18 @@ export default function FAB({ defaultFixture }) {
               )}
 
               <div className="flex gap-3 mt-6">
-                {mode === "create" ? (
-                  <button
-                    onClick={() => handleSubmit("create")}
-                    disabled={submitting || !formData.upc}
-                    className="flex-1 bg-pink-600 text-white py-2 rounded-md hover:bg-pink-700 transition-colors flex items-center justify-center disabled:opacity-50">
-                    {submitting ? (
-                      <Loader2 className="w-5 h-5 animate-spin" />
-                    ) : (
-                      <>
-                        <Plus className="w-4 h-4 mr-2" /> Create
-                      </>
-                    )}
-                  </button>
-                ) : (
-                  <>
-                    <button
-                      onClick={() => handleSubmit("update")}
-                      disabled={
-                        submitting || !formData.upc || !formData.fixture
-                      }
-                      className="flex-1 bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition-colors flex items-center justify-center disabled:opacity-50">
-                      {submitting ? (
-                        <Loader2 className="w-5 h-5 animate-spin" />
-                      ) : (
-                        <>
-                          <Edit2 className="w-4 h-4 mr-2" /> Update
-                        </>
-                      )}
-                    </button>
-                    <button
-                      onClick={() => handleSubmit("delete")}
-                      disabled={
-                        submitting || !formData.upc || !formData.fixture
-                      }
-                      className="flex-1 bg-red-600 text-white py-2 rounded-md hover:bg-red-700 transition-colors flex items-center justify-center disabled:opacity-50">
-                      {submitting ? (
-                        <Loader2 className="w-5 h-5 animate-spin" />
-                      ) : (
-                        <>
-                          <Trash2 className="w-4 h-4 mr-2" /> Delete
-                        </>
-                      )}
-                    </button>
-                  </>
-                )}
+                <button
+                  onClick={handleSubmit}
+                  disabled={submitting || !formData.upc}
+                  className="flex-1 bg-pink-600 text-white py-2 rounded-md hover:bg-pink-700 transition-colors flex items-center justify-center disabled:opacity-50">
+                  {submitting ? (
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                  ) : (
+                    <>
+                      <Plus className="w-4 h-4 mr-2" /> Create
+                    </>
+                  )}
+                </button>
               </div>
             </div>
           </div>

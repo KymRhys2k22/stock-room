@@ -7,6 +7,7 @@ import SearchBar from "./components/SearchBar";
 import ProductCard from "./components/ProductCard";
 import ProductModal from "./components/ProductModal";
 import SkeletonLoader from "./components/SkeletonLoader";
+import Footer from "./components/Footer";
 
 export default function Fixture() {
   const { label } = useParams();
@@ -123,6 +124,7 @@ export default function Fixture() {
         product={selectedProduct}
         onClose={() => setSelectedProduct(null)}
       />
+      <Footer />
     </div>
   );
 }
