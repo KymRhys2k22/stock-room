@@ -6,7 +6,7 @@ export default function Footer() {
       <h3 className="text-lg font-bold">
         © {currentYear} Kym Rhys Mallari. All rights reserved.
       </h3>{" "}
-      <p className="text-sm">Stock Room Manage System</p>
+      <p className="text-sm">Stock Room Manage System version 23</p>
     </footer>
   );
 }
