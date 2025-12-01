@@ -18,7 +18,9 @@ if (!PUBLISHABLE_KEY) {
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
+    <ClerkProvider
+      publishableKey="pk_live_Y2xlcmsuZGFpc29wYXYuc3RvcmUk"
+      afterSignOutUrl="/">
       <BrowserRouter>
         <Routes>
           <Route element={<ProtectedRoute />}>
