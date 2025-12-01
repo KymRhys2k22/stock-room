@@ -6,9 +6,11 @@ import {
   SignedOut,
   SignInButton,
   UserButton,
+  useUser,
 } from "@clerk/clerk-react";
 
 export default function Header({ title, headerText, sortOrder, setSortOrder }) {
+  const { user } = useUser();
   const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const dropdownRef = React.useRef(null);
@@ -45,7 +47,7 @@ export default function Header({ title, headerText, sortOrder, setSortOrder }) {
         </button>
 
         {isMenuOpen && (
-          <div className="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20 ring-1 ring-black ring-opacity-5">
+          <div className="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 ring-1 ring-black ring-opacity-5">
             <Link
               to="/"
               onClick={() => setIsMenuOpen(false)}
@@ -70,8 +72,10 @@ export default function Header({ title, headerText, sortOrder, setSortOrder }) {
               </SignedOut>
               <SignedIn>
                 <div className="flex items-center gap-2">
-                  <UserButton />
-                  <span className="text-sm text-gray-700">Account</span>
+                  <UserButton afterSignOutUrl="/" />
+                  <span className="text-sm text-gray-700">
+                    {user?.firstName || user?.username || "User"}
+                  </span>
                 </div>
               </SignedIn>
             </div>

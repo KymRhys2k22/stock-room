@@ -21,8 +21,9 @@ export default function ProductModal({ product, onClose }) {
   const [message, setMessage] = useState("");
 
   const APPS_SCRIPT_URL_VITE = import.meta.env.VITE_APPS_SCRIPT_URL;
-  console.log(APPS_SCRIPT_URL_VITE);
+
   const APPS_SCRIPT_URL = `https://script.google.com/macros/s/${APPS_SCRIPT_URL_VITE}/exec`;
+  console.log(APPS_SCRIPT_URL);
 
   // Reset states when product changes
   useEffect(() => {
