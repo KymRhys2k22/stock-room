@@ -8,7 +8,7 @@ import ProductModal from "./components/ProductModal";
 import SkeletonLoader from "./components/SkeletonLoader";
 import Footer from "./components/Footer";
 
-export default function App() {
+export default function Home() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -16,11 +16,11 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOrder, setSortOrder] = useState("default");
 
+  const API_URL = import.meta.env.VITE_API_KEY;
+
   useEffect(() => {
     setLoading(true);
-    fetch(
-      "https://opensheet.elk.sh/1sZuuC4o44rh-yRYaeeRFRo4HeOhMj6x6y4ux96D5nok/Master"
-    )
+    fetch(`https://opensheet.elk.sh/${API_URL}/Master`)
       .then((response) => response.json())
       .then((data) => {
         const mappedProducts = data

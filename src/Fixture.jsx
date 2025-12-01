@@ -16,13 +16,12 @@ export default function Fixture() {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOrder, setSortOrder] = useState("default");
+  const API_URL = import.meta.env.VITE_API_KEY;
 
   useEffect(() => {
     // ... (fetch logic remains same)
     setLoading(true);
-    fetch(
-      "https://opensheet.elk.sh/1sZuuC4o44rh-yRYaeeRFRo4HeOhMj6x6y4ux96D5nok/Master"
-    )
+    fetch(`https://opensheet.elk.sh/${API_URL}/Master`)
       .then((response) => response.json())
       .then((data) => {
         const filteredData = data.filter((item) => item.FIXTURE === label);

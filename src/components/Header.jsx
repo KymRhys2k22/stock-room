@@ -1,6 +1,12 @@
 import React from "react";
 import { ListFilter, Menu, Home, Upload } from "lucide-react";
 import { Link } from "react-router-dom";
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  UserButton,
+} from "@clerk/clerk-react";
 
 export default function Header({ title, headerText, sortOrder, setSortOrder }) {
   const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
@@ -30,7 +36,7 @@ export default function Header({ title, headerText, sortOrder, setSortOrder }) {
 
   const text = title;
   return (
-    <header className="flex lg:px-96 md:px-10 items-center justify-between px-4 py-4 bg-gray-50 sticky top-0 z-10">
+    <header className="flex lg:px-96 shadow-sm md:px-10 items-center justify-between px-4 py-4 bg-gray-50 sticky top-0 z-10 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-30 border border-gray-100">
       <div className="relative" ref={menuRef}>
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -54,6 +60,21 @@ export default function Header({ title, headerText, sortOrder, setSortOrder }) {
               <Upload className="w-4 h-4" />
               UPLOAD IMAGE
             </Link>
+            <div className="px-4 py-2 border-t border-gray-100">
+              <SignedOut>
+                <SignInButton mode="modal">
+                  <button className="text-sm text-gray-700 hover:text-gray-900 w-full text-left">
+                    Sign In
+                  </button>
+                </SignInButton>
+              </SignedOut>
+              <SignedIn>
+                <div className="flex items-center gap-2">
+                  <UserButton />
+                  <span className="text-sm text-gray-700">Account</span>
+                </div>
+              </SignedIn>
+            </div>
           </div>
         )}
       </div>

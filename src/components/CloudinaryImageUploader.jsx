@@ -18,8 +18,9 @@ import {
  * CLOUDINARY_URL=cloudinary://584798137671192:ez88_02Cj9WmMtS4i2rwCP0tONg@dqtldfxeh
  */
 
-const CLOUDINARY_CLOUD_NAME = "dqtldfxeh"; // TODO: Replace with your cloud name
-const CLOUDINARY_UPLOAD_PRESET = "daisoimage"; // TODO: Replace with your unsigned preset
+// TODO: Replace with your unsigned preset
+const CLOUDINARY_CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+const CLOUDINARY_UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
 const CLOUDINARY_UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`;
 
 export default function CloudinaryImageUploader() {

@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import { X, Upload, Trash2, Save, Edit2, Loader2 } from "lucide-react";
 import { getStatusColor } from "../utils/helpers";
 
-const CLOUDINARY_CLOUD_NAME = "dqtldfxeh";
-const CLOUDINARY_UPLOAD_PRESET = "daisoimage";
+const CLOUDINARY_CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+const CLOUDINARY_UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
+
 const CLOUDINARY_UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`;
 
 export default function ProductModal({ product, onClose }) {
@@ -19,8 +20,9 @@ export default function ProductModal({ product, onClose }) {
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState("");
 
-  const APPS_SCRIPT_URL =
-    "https://script.google.com/macros/s/AKfycbzltjf-_WBUKxZ7Jrf4OJvdVJ6zjo0IlaLnhqlJnZAcujoydH8-pE73oQ-mRuM3LWmz/exec";
+  const APPS_SCRIPT_URL_VITE = import.meta.env.VITE_APPS_SCRIPT_URL;
+  console.log(APPS_SCRIPT_URL_VITE);
+  const APPS_SCRIPT_URL = `https://script.google.com/macros/s/${APPS_SCRIPT_URL_VITE}/exec`;
 
   // Reset states when product changes
   useEffect(() => {
