@@ -12,6 +12,7 @@ import {
 
 export default function Header({ title, headerText, sortOrder, setSortOrder }) {
   const { user } = useUser();
+  const imageUrl = user.imageUrl;
   const { signOut } = useClerk(); // Get the signOut function
   const navigate = useNavigate(); // Hook for navigation
 
@@ -53,8 +54,9 @@ export default function Header({ title, headerText, sortOrder, setSortOrder }) {
   };
 
   const text = title;
+
   return (
-    <header className="flex lg:px-96 shadow-sm md:px-10 items-center justify-between px-4 py-4 bg-gray-50 sticky top-0 z-10 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-30 border border-gray-100">
+    <header className="flex lg:px-96 shadow-sm md:px-10 items-center justify-between px-4 py-4 bg-gray-50 sticky top-0 z-10 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-15 border border-gray-100">
       <div className="relative" ref={menuRef}>
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -89,7 +91,13 @@ export default function Header({ title, headerText, sortOrder, setSortOrder }) {
               <SignedIn>
                 <div className="flex flex-col gap-2">
                   <div className="flex items-center gap-2 mb-2">
-                    <UserButton afterSignOutUrl="/" />
+                    {user?.imageUrl && (
+                      <img
+                        src={user?.imageUrl}
+                        alt="User"
+                        className="w-8 h-8 rounded-full"
+                      />
+                    )}
                     <span className="text-sm font-medium text-gray-900 overflow-hidden text-ellipsis">
                       {user?.firstName || user?.username || "User"}
                     </span>
@@ -109,7 +117,7 @@ export default function Header({ title, headerText, sortOrder, setSortOrder }) {
       </div>
 
       {/* ... Rest of your component (Header Text and Sort Dropdown) ... */}
-       <h1 className="text-xl text-center font-bold text-slate-900 pl-2">
+      <h1 className="text-xl text-center font-bold text-slate-900 pl-2">
         {headerText} {text}
       </h1>
       <div className="relative" ref={dropdownRef}>
