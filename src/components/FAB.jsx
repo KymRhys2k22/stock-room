@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Plus, X, Trash2, Save, Edit2, Loader2, Upload } from "lucide-react";
+import imageCompression from "browser-image-compression";
 
 // REPLACE THIS WITH YOUR DEPLOYED GOOGLE APPS SCRIPT WEB APP URL
 const APPS_SCRIPT_URL =
@@ -94,8 +95,17 @@ export default function FAB({ defaultFixture }) {
     setUploadSuccess(null);
 
     try {
+      // Compress image before upload
+      const options = {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 1920,
+        useWebWorker: true,
+      };
+
+      const compressedFile = await imageCompression(file, options);
+
       const uploadData = new FormData();
-      uploadData.append("file", file);
+      uploadData.append("file", compressedFile);
       uploadData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
       uploadData.append("public_id", formData.upc);
       uploadData.append("folder", "products");

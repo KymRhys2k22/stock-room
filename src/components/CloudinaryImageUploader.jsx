@@ -6,6 +6,7 @@ import {
   AlertCircle,
   Image as ImageIcon,
 } from "lucide-react";
+import imageCompression from "browser-image-compression";
 
 /**
  * CloudinaryImageUploader Component
@@ -78,6 +79,15 @@ export default function CloudinaryImageUploader() {
    * Upload a single file to Cloudinary
    */
   const uploadToCloudinary = async (file, index) => {
+    // Compress image before upload
+    const options = {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 1920,
+      useWebWorker: true,
+    };
+
+    const compressedFile = await imageCompression(file, options);
+
     const formData = new FormData();
 
     // Generate public_id based on SKU and index
@@ -87,7 +97,7 @@ export default function CloudinaryImageUploader() {
         ? sku
         : `${sku}-${uploadedImages.length + index + 1}`;
 
-    formData.append("file", file);
+    formData.append("file", compressedFile);
     formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
     formData.append("public_id", publicId);
     formData.append("folder", "products"); // Optional: organize in a folder
@@ -131,9 +141,18 @@ export default function CloudinaryImageUploader() {
     setError(null);
 
     try {
+      // Compress image before upload
+      const options = {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 1920,
+        useWebWorker: true,
+      };
+
+      const compressedFile = await imageCompression(file, options);
+
       // Upload with the same public_id to replace
       const formData = new FormData();
-      formData.append("file", file);
+      formData.append("file", compressedFile);
       formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
       formData.append("public_id", imageToReplace.publicId);
       formData.append("folder", "products");

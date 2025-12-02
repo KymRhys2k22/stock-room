@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { X, Upload, Trash2, Save, Edit2, Loader2 } from "lucide-react";
 import { getStatusColor } from "../utils/helpers";
+import imageCompression from "browser-image-compression";
 
 const CLOUDINARY_CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
 const CLOUDINARY_UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
@@ -69,8 +70,17 @@ export default function ProductModal({ product, onClose }) {
     setUploadError(null);
 
     try {
+      // Compress image before upload
+      const options = {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 1920,
+        useWebWorker: true,
+      };
+
+      const compressedFile = await imageCompression(file, options);
+
       const formData = new FormData();
-      formData.append("file", file);
+      formData.append("file", compressedFile);
       formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
       formData.append("public_id", product.upc);
       formData.append("folder", "products");

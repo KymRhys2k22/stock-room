@@ -10,6 +10,7 @@ import NotFound from "./components/NotFound.jsx";
 import { ClerkProvider } from "@clerk/clerk-react";
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+console.log(PUBLISHABLE_KEY);
 const key = "pk_live_Y2xlcmsuZGFpc29wYXYuc3RvcmUk";
 
 /* if (!PUBLISHABLE_KEY) {
