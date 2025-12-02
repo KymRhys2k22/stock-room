@@ -1,16 +1,20 @@
 import React from "react";
-import { ListFilter, Menu, Home, Upload } from "lucide-react";
-import { Link } from "react-router-dom";
+import { ListFilter, Menu, Home, Upload, LogOut } from "lucide-react"; // Added LogOut icon
+import { Link, useNavigate } from "react-router-dom"; // Added useNavigate
 import {
   SignedIn,
   SignedOut,
   SignInButton,
   UserButton,
   useUser,
+  useClerk, // Import useClerk
 } from "@clerk/clerk-react";
 
 export default function Header({ title, headerText, sortOrder, setSortOrder }) {
   const { user } = useUser();
+  const { signOut } = useClerk(); // Get the signOut function
+  const navigate = useNavigate(); // Hook for navigation
+
   const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const dropdownRef = React.useRef(null);
@@ -18,6 +22,12 @@ export default function Header({ title, headerText, sortOrder, setSortOrder }) {
 
   React.useEffect(() => {
     function handleClickOutside(event) {
+      // Logic to ignore clicks if they are inside Clerk elements (portals)
+      // This prevents the menu from closing if you do decide to keep UserButton interactions
+      if (event.target.closest(".cl-component")) {
+        return;
+      }
+
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsDropdownOpen(false);
       }
@@ -36,6 +46,12 @@ export default function Header({ title, headerText, sortOrder, setSortOrder }) {
     setIsDropdownOpen(false);
   };
 
+  const handleSignOut = async () => {
+    await signOut();
+    setIsMenuOpen(false);
+    navigate("/");
+  };
+
   const text = title;
   return (
     <header className="flex lg:px-96 shadow-sm md:px-10 items-center justify-between px-4 py-4 bg-gray-50 sticky top-0 z-10 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-30 border border-gray-100">
@@ -51,14 +67,14 @@ export default function Header({ title, headerText, sortOrder, setSortOrder }) {
             <Link
               to="/"
               onClick={() => setIsMenuOpen(false)}
-              className="flex px-4 py-2 text-sm text-gray-700 hover:bg-gray-100  items-center gap-2">
+              className="flex px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 items-center gap-2">
               <Home className="w-4 h-4" />
               HOME
             </Link>
             <Link
               to="/upload-image"
               onClick={() => setIsMenuOpen(false)}
-              className="flex px-4 py-2 text-sm text-gray-700 hover:bg-gray-100  items-center gap-2">
+              className="flex px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 items-center gap-2">
               <Upload className="w-4 h-4" />
               UPLOAD IMAGE
             </Link>
@@ -71,11 +87,20 @@ export default function Header({ title, headerText, sortOrder, setSortOrder }) {
                 </SignInButton>
               </SignedOut>
               <SignedIn>
-                <div className="flex items-center gap-2">
-                  <UserButton afterSignOutUrl="/" />
-                  <span className="text-sm text-gray-700">
-                    {user?.firstName || user?.username || "User"}
-                  </span>
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center gap-2 mb-2">
+                    <UserButton afterSignOutUrl="/" />
+                    <span className="text-sm font-medium text-gray-900 overflow-hidden text-ellipsis">
+                      {user?.firstName || user?.username || "User"}
+                    </span>
+                  </div>
+                  {/* Custom Sign Out Button */}
+                  <button
+                    onClick={handleSignOut}
+                    className="flex w-full items-center gap-2 text-sm text-red-600 hover:bg-gray-50 py-1">
+                    <LogOut className="w-4 h-4" />
+                    Sign Out
+                  </button>
                 </div>
               </SignedIn>
             </div>
@@ -83,7 +108,8 @@ export default function Header({ title, headerText, sortOrder, setSortOrder }) {
         )}
       </div>
 
-      <h1 className="text-xl text-center font-bold text-slate-900 pl-2">
+      {/* ... Rest of your component (Header Text and Sort Dropdown) ... */}
+       <h1 className="text-xl text-center font-bold text-slate-900 pl-2">
         {headerText} {text}
       </h1>
       <div className="relative" ref={dropdownRef}>
