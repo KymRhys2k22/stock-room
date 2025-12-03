@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { Grid, List } from "lucide-react";
 
 import FAB from "./components/FAB";
 import Header from "./components/Header";
 import SearchBar from "./components/SearchBar";
 import ProductCard from "./components/ProductCard";
+import ImageGridView from "./components/ImageGridView";
 import ProductModal from "./components/ProductModal";
 import SkeletonLoader from "./components/SkeletonLoader";
 import Footer from "./components/Footer";
@@ -15,6 +17,7 @@ export default function Home() {
 
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOrder, setSortOrder] = useState("default");
+  const [viewMode, setViewMode] = useState("card");
 
   const API_URL = import.meta.env.VITE_API_KEY;
 
@@ -83,7 +86,7 @@ export default function Home() {
       />
 
       <div className="px-4 pt-4 md:px-10 lg:px-96 space-y-4">
-        <div className="flex gap-2">
+        <div className="flex gap-2 items-center">
           <div className="flex-1">
             <SearchBar
               searchQuery={searchQuery}
@@ -91,10 +94,27 @@ export default function Home() {
               placeholder="Search..."
             />
           </div>
+          <button
+            onClick={() => setViewMode(viewMode === "card" ? "grid" : "card")}
+            className="p-2 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none transition-colors"
+            title={
+              viewMode === "card"
+                ? "Switch to Grid View"
+                : "Switch to Card View"
+            }>
+            {viewMode === "card" ? (
+              <Grid className="w-5 h-5 text-slate-900 dark:text-gray-100" />
+            ) : (
+              <List className="w-5 h-5 text-slate-900 dark:text-gray-100" />
+            )}
+          </button>
         </div>
 
         {/* Product List */}
-        <div className="space-y-3">
+        <div
+          className={
+            viewMode === "grid" ? "grid grid-cols-2 gap-3" : "space-y-3"
+          }>
           {loading ? (
             <>
               <SkeletonLoader />
@@ -103,6 +123,14 @@ export default function Home() {
               <SkeletonLoader />
               <SkeletonLoader />
             </>
+          ) : viewMode === "grid" ? (
+            filteredProducts.map((product) => (
+              <ImageGridView
+                key={product.id}
+                product={product}
+                onClick={() => setSelectedProduct(product)}
+              />
+            ))
           ) : (
             filteredProducts.map((product) => (
               <ProductCard
