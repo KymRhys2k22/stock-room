@@ -185,21 +185,21 @@ export default function FAB({ defaultFixture }) {
       </button>
 
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 px-4">
-          <div className="bg-white rounded-lg shadow-xl w-full max-w-md p-6 relative">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 dark:bg-opacity-70 px-4">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-md p-6 relative">
             <button
               onClick={() => setIsOpen(false)}
-              className="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
+              className="absolute top-4 right-4 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200">
               <X className="w-6 h-6" />
             </button>
 
-            <h2 className="text-2xl font-bold mb-4 text-gray-800">
+            <h2 className="text-2xl font-bold mb-4 text-gray-800 dark:text-gray-100">
               Add New Item
             </h2>
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   UPC (Unique ID)
                 </label>
                 <input
@@ -207,13 +207,13 @@ export default function FAB({ defaultFixture }) {
                   name="upc"
                   value={formData.upc}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500"
                   placeholder="Enter UPC"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Fixture
                 </label>
                 <input
@@ -222,9 +222,9 @@ export default function FAB({ defaultFixture }) {
                   value={formData.fixture}
                   onChange={handleInputChange}
                   disabled={!!defaultFixture}
-                  className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500 ${
+                  className={`w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500 ${
                     defaultFixture
-                      ? "bg-gray-100 text-gray-500 cursor-not-allowed"
+                      ? "bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed"
                       : ""
                   }`}
                   placeholder="e.g. C1"
@@ -232,7 +232,7 @@ export default function FAB({ defaultFixture }) {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Quantity
                 </label>
                 <input
@@ -240,18 +240,18 @@ export default function FAB({ defaultFixture }) {
                   name="qty"
                   value={formData.qty}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500"
                   placeholder="0"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Product Image
                 </label>
                 <div className="flex items-center gap-2">
                   <label
-                    className={`flex-1 flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 cursor-pointer ${
+                    className={`flex-1 flex items-center justify-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 cursor-pointer ${
                       !formData.upc ? "opacity-50 cursor-not-allowed" : ""
                     }`}>
                     {uploading ? (
@@ -294,7 +294,7 @@ export default function FAB({ defaultFixture }) {
                 <button
                   onClick={handleSubmit}
                   disabled={submitting || !formData.upc}
-                  className="flex-1 bg-pink-600 text-white py-2 rounded-md hover:bg-pink-700 transition-colors flex items-center justify-center disabled:opacity-50">
+                  className="flex-1 bg-pink-600 dark:bg-pink-500 text-white py-2 rounded-md hover:bg-pink-700 dark:hover:bg-pink-600 transition-colors flex items-center justify-center disabled:opacity-50">
                   {submitting ? (
                     <Loader2 className="w-5 h-5 animate-spin" />
                   ) : (

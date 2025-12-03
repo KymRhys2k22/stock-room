@@ -74,7 +74,7 @@ export default function Fixture() {
     });
 
   return (
-    <div className="min-h-screen bg-gray-50 font-sans text-gray-900 pb-24">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 font-sans text-gray-900 dark:text-gray-100 pb-24">
       <Header
         headerText="FIXTURE"
         title={label}

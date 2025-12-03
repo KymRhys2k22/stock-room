@@ -75,7 +75,7 @@ export default function Home() {
     });
 
   return (
-    <div className="min-h-screen bg-gray-50 font-sans text-gray-900 pb-24">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 font-sans text-gray-900 dark:text-gray-100 pb-24">
       <Header
         title="Daiso Japan Stock Room Management System"
         sortOrder={sortOrder}

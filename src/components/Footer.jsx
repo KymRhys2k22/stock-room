@@ -2,7 +2,7 @@ import React from "react";
 export default function Footer() {
   const currentYear = new Date().getFullYear();
   return (
-    <footer className="mt-12 text-center text-gray-500">
+    <footer className="mt-12 text-center text-gray-500 dark:text-gray-400">
       <h3 className="text-lg font-bold">
         © {currentYear} Kym Rhys Mallari. All rights reserved.
       </h3>{" "}
