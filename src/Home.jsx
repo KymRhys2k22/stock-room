@@ -102,10 +102,10 @@ export default function Home() {
                 ? "Switch to Grid View"
                 : "Switch to Card View"
             }>
-            {viewMode === "card" ? (
-              <Grid className="w-5 h-5 text-slate-900 dark:text-gray-100" />
+            {viewMode === "card" ? (<List className="w-5 h-5 text-slate-900 dark:text-gray-100" />
+              
             ) : (
-              <List className="w-5 h-5 text-slate-900 dark:text-gray-100" />
+              <Grid className="w-5 h-5 text-slate-900 dark:text-gray-100" />
             )}
           </button>
         </div>
