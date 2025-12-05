@@ -94,7 +94,7 @@ export default function Fixture() {
             />
           </div>
           <button
-            onClick={() => setViewMode(viewMode === "card" ? "card" : "grid")}
+            onClick={() => setViewMode(viewMode === "grid" ? "card" : "grid")}
             className="p-2 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none transition-colors"
             title={
               viewMode === "card"
