@@ -94,12 +94,13 @@ export default function Fixture() {
             />
           </div>
           <button
-            onClick={() => setViewMode(viewMode === "card" ? "grid" : "card")}
+            onClick={() => setViewMode(viewMode === "card" ? "card" : "grid")}
             className="p-2 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none transition-colors"
             title={
               viewMode === "card"
-                ? "Switch to Grid View"
-                : "Switch to Card View"
+                ? "Switch to Card View":
+"Switch to Grid View"
+                
             }>
             {viewMode === "card" ? (<List className="w-5 h-5 text-slate-900 dark:text-gray-100" />
               
@@ -112,7 +113,7 @@ export default function Fixture() {
         {/* Product List */}
         <main
           className={
-            viewMode === "grid" ? "grid grid-cols-2 gap-3" : "space-y-3"
+            viewMode === "grid" ? "space-y-3": "grid grid-cols-2 gap-3" 
           }>
           {loading ? (
             <>
@@ -122,7 +123,7 @@ export default function Fixture() {
               <SkeletonLoader />
               <SkeletonLoader />
             </>
-          ) : viewMode === "grid" ? (
+          ) : viewMode === "card" ? (
             filteredProducts.map((product) => (
               <ImageGridView
                 key={product.id}
