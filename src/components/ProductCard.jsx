@@ -60,6 +60,7 @@ export default function ProductCard({ product, onClick }) {
             <p>SKU: {product.sku}</p>
             <p>UPC: {product.upc}</p>
             {product.fixture && <p>Fixture: {product.fixture}</p>}
+            {product.box && <p>Box: {product.box}</p>}
           </div>
         </div>
       </section>

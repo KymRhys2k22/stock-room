@@ -28,6 +28,7 @@ function doPost(e) {
     const upcIndex = headers.indexOf("UPC");
     const fixtureIndex = headers.indexOf("FIXTURE");
     const qtyIndex = headers.indexOf("QTY");
+    const boxIndex = headers.indexOf("BOX");
 
     if (upcIndex === -1) throw new Error("UPC column not found");
 
@@ -75,7 +76,7 @@ function doPost(e) {
       }
     }
 
-    // CREATE — inserts only UPC, FIXTURE, QTY
+    // CREATE — inserts only UPC, FIXTURE, QTY, BOX
     if (action === "create") {
       if (rowIndex !== -1) throw new Error("UPC and Fixture already exists");
 
@@ -83,6 +84,7 @@ function doPost(e) {
       newRow[upcIndex] = upc;
       if (fixtureIndex !== -1) newRow[fixtureIndex] = data.fixture || "";
       if (qtyIndex !== -1) newRow[qtyIndex] = data.qty || 0;
+      if (boxIndex !== -1) newRow[boxIndex] = data.box || "";
 
       sheet.appendRow(newRow);
       return respond({ status: "success", message: "Created successfully" });
@@ -97,6 +99,8 @@ function doPost(e) {
         sheet.getRange(rowIndex, fixtureIndex + 1).setValue(data.fixture);
       if (qtyIndex !== -1)
         sheet.getRange(rowIndex, qtyIndex + 1).setValue(data.qty);
+      if (boxIndex !== -1)
+        sheet.getRange(rowIndex, boxIndex + 1).setValue(data.box);
 
       return respond({ status: "success", message: "Updated successfully" });
     }

@@ -21,10 +21,7 @@ export default function ProductModal({ product, onClose }) {
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState("");
 
-  const APPS_SCRIPT_URL_VITE = import.meta.env.VITE_APPS_SCRIPT_URL;
-
-  const APPS_SCRIPT_URL = `https://script.google.com/macros/s/${APPS_SCRIPT_URL_VITE}/exec`;
-  console.log(APPS_SCRIPT_URL);
+  const APPS_SCRIPT_URL = `https://script.google.com/macros/s/AKfycbzQsTWyNHx7Z8QDEkQaBEHJ_0XzsYPxd8v8a0bFyEm6ZsC3q1stXRuq7a5k7A5paEHQ/exec`;
 
   // Reset states when product changes
   useEffect(() => {
@@ -37,6 +34,7 @@ export default function ProductModal({ product, onClose }) {
       setEditData({
         fixture: product.fixture || "",
         qty: product.quantity || "",
+        box: product.box || "",
       });
       setMessage("");
     }
@@ -119,6 +117,7 @@ export default function ProductModal({ product, onClose }) {
       formDataParams.append("upc", product.upc);
       formDataParams.append("fixture", editData.fixture);
       formDataParams.append("qty", editData.qty);
+      formDataParams.append("box", editData.box);
 
       const res = await fetch(APPS_SCRIPT_URL, {
         method: "POST",
@@ -298,24 +297,45 @@ export default function ProductModal({ product, onClose }) {
             </div>
 
             {/* Editable Fields */}
-            <div className="col-span-2">
-              <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider font-semibold">
-                Fixture
-              </p>
-              {isEditing ? (
-                <input
-                  type="text"
-                  value={editData.fixture}
-                  onChange={(e) =>
-                    setEditData({ ...editData, fixture: e.target.value })
-                  }
-                  className="w-full mt-1 px-2 py-1 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded focus:outline-none focus:ring-2 focus:ring-pink-500"
-                />
-              ) : (
-                <p className="text-base font-medium text-slate-900 dark:text-gray-100">
-                  {product.fixture}
+            <div className="col-span-2 grid grid-cols-2 gap-4">
+              <div>
+                <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider font-semibold">
+                  Fixture
                 </p>
-              )}
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={editData.fixture}
+                    onChange={(e) =>
+                      setEditData({ ...editData, fixture: e.target.value })
+                    }
+                    className="w-full mt-1 px-2 py-1 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded focus:outline-none focus:ring-2 focus:ring-pink-500"
+                  />
+                ) : (
+                  <p className="text-base font-medium text-slate-900 dark:text-gray-100">
+                    {product.fixture}
+                  </p>
+                )}
+              </div>
+              <div>
+                <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider font-semibold">
+                  Box
+                </p>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={editData.box}
+                    onChange={(e) =>
+                      setEditData({ ...editData, box: e.target.value })
+                    }
+                    className="w-full mt-1 px-2 py-1 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded focus:outline-none focus:ring-2 focus:ring-pink-500"
+                  />
+                ) : (
+                  <p className="text-base font-medium text-slate-900 dark:text-gray-100">
+                    {product.box || "-"}
+                  </p>
+                )}
+              </div>
             </div>
           </div>
 

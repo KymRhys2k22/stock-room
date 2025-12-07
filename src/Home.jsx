@@ -38,6 +38,7 @@ export default function Home() {
             quantity: parseInt(item.QTY),
             department: item.DEPARTMENT,
             fixture: item.FIXTURE,
+            box: item.BOX,
             status:
               parseInt(item.QTY) > 10
                 ? "green"

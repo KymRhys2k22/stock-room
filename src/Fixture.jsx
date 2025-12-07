@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Plus, Grid, List } from "lucide-react";
@@ -41,6 +42,7 @@ export default function Fixture() {
           quantity: parseInt(item.QTY),
           department: item.DEPARTMENT,
           fixture: item.FIXTURE,
+          box: item.BOX,
           status:
             parseInt(item.QTY) > 10
               ? "green"

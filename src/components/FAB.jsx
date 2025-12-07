@@ -4,7 +4,7 @@ import imageCompression from "browser-image-compression";
 
 // REPLACE THIS WITH YOUR DEPLOYED GOOGLE APPS SCRIPT WEB APP URL
 const APPS_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbzltjf-_WBUKxZ7Jrf4OJvdVJ6zjo0IlaLnhqlJnZAcujoydH8-pE73oQ-mRuM3LWmz/exec";
+  "https://script.google.com/macros/s/AKfycbzQsTWyNHx7Z8QDEkQaBEHJ_0XzsYPxd8v8a0bFyEm6ZsC3q1stXRuq7a5k7A5paEHQ/exec";
 const DATA_URL =
   "https://opensheet.elk.sh/1sZuuC4o44rh-yRYaeeRFRo4HeOhMj6x6y4ux96D5nok/Master";
 
@@ -12,13 +12,14 @@ export default function FAB({ defaultFixture }) {
   const [isOpen, setIsOpen] = useState(false);
   // Mode is always 'create' now
   const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState("");
 
   const [formData, setFormData] = useState({
     upc: "",
     fixture: defaultFixture || "",
+    box: "",
     qty: "",
   });
 
@@ -120,7 +121,6 @@ export default function FAB({ defaultFixture }) {
         throw new Error(errorData.error?.message || "Upload failed");
       }
 
-      const data = await response.json();
       setUploadSuccess("Image uploaded successfully!");
     } catch (err) {
       setUploadError(err.message || "Upload failed. Please try again.");
@@ -144,6 +144,7 @@ export default function FAB({ defaultFixture }) {
       formDataParams.append("action", "create");
       formDataParams.append("upc", formData.upc);
       formDataParams.append("fixture", formData.fixture);
+      formDataParams.append("box", formData.box);
       formDataParams.append("qty", formData.qty);
 
       const res = await fetch(APPS_SCRIPT_URL, {
@@ -155,7 +156,12 @@ export default function FAB({ defaultFixture }) {
 
       if (result.status === "success") {
         setMessage(`Success: ${result.message}`);
-        setFormData({ upc: "", fixture: defaultFixture || "", qty: "" });
+        setFormData({
+          upc: "",
+          fixture: defaultFixture || "",
+          box: "",
+          qty: "",
+        });
         setUploadSuccess(null); // Reset upload status
         fetchData(); // Reload data
         window.location.reload();
@@ -173,7 +179,7 @@ export default function FAB({ defaultFixture }) {
   const openModal = () => {
     setIsOpen(true);
     setMessage("");
-    setFormData({ upc: "", fixture: defaultFixture || "", qty: "" });
+    setFormData({ upc: "", fixture: defaultFixture || "", box: "", qty: "" });
   };
 
   return (
@@ -228,6 +234,20 @@ export default function FAB({ defaultFixture }) {
                       : ""
                   }`}
                   placeholder="e.g. C1"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  Box
+                </label>
+                <input
+                  type="text"
+                  name="box"
+                  value={formData.box}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500"
+                  placeholder="e.g. B1"
                 />
               </div>
 

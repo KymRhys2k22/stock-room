@@ -52,6 +52,7 @@ export default function ImageGridView({ product, onClick }) {
           </h3>
           <span className="text-xs text-gray-500 dark:text-gray-400">
             {product.fixture}
+            {product.box}
           </span>
         </div>
         <div className="flex justify-between items-center mt-2">
@@ -70,17 +71,22 @@ export default function ImageGridView({ product, onClick }) {
         </div>
         <div className="flex justify-between items-center ">
           <p className="text-xs  text-gray-400">SKU: {product.sku}</p>
-          <p className="text-xs text-pink-500 lg:text-gray-400">
-            {" "}
-            {product.fixture}
-          </p>
+          <div className="text-right">
+            <p className="text-xs text-pink-500 lg:text-gray-400">
+              {product.fixture}
+            </p>
+          </div>
         </div>
         <div className="flex justify-between items-center">
           <p className="text-xs text-gray-400  lg:text-xs">
             UPC: {product.upc}
           </p>
-          <p className="text-xs hidden sm:block text-pink-500">
-            {product.department}
+          <p className="hidden sm:block text-pink-500 lg:text-xs">
+            <strong>
+              {product.department.toLowerCase() === "outdoor & gms"
+                ? "GMS"
+                : product.department}
+            </strong>
           </p>
         </div>
       </div>
