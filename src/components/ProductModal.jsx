@@ -134,7 +134,7 @@ export default function ProductModal({ product, onClose }) {
         setMessage(`Error: ${result.message}`);
       }
     } catch (error) {
-      setMessage("Network error. Check console.");
+      setMessage(`Network error: ${error}`);
     } finally {
       setSubmitting(false);
     }
@@ -167,7 +167,7 @@ export default function ProductModal({ product, onClose }) {
         setMessage(`Error: ${result.message}`);
       }
     } catch (error) {
-      setMessage("Network error. Check console.");
+      setMessage(`Network error: ${error}`);
     } finally {
       setSubmitting(false);
     }
@@ -254,13 +254,13 @@ export default function ProductModal({ product, onClose }) {
               <div className="flex gap-2">
                 <button
                   onClick={() => setIsEditing(true)}
-                  className="p-2 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-full transition-colors">
+                  className="p-2 text-blue-600 dark:text-blue-400 hover:bg-blue-50 lg:bg-transparent  bg-blue-50  dark:hover:bg-blue-900/30 rounded-full transition-colors">
                   <Edit2 className="w-5 h-5" />
                 </button>
                 <button
                   onClick={handleDelete}
                   disabled={submitting}
-                  className="p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-full transition-colors disabled:opacity-50">
+                  className="p-2 text-red-600 dark:text-red-400 hover:bg-red-50 bg-red-50 lg:bg-transparent dark:hover:bg-red-900/30 rounded-full transition-colors disabled:opacity-50">
                   {submitting ? (
                     <Loader2 className="w-5 h-5 animate-spin" />
                   ) : (

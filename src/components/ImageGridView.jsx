@@ -68,8 +68,17 @@ export default function ImageGridView({ product, onClick }) {
             </span>
           </div>
         </div>
-        <div className="flex justify-between items-center mt-2">
-          <p className="text-xs text-gray-400 mt-1">UPC: {product.upc}</p>
+        <div className="flex justify-between items-center ">
+          <p className="text-xs  text-gray-400">SKU: {product.sku}</p>
+          <p className="text-xs text-pink-500 lg:text-gray-400">
+            {" "}
+            {product.fixture}
+          </p>
+        </div>
+        <div className="flex justify-between items-center">
+          <p className="text-xs text-gray-400  lg:text-xs">
+            UPC: {product.upc}
+          </p>
           <p className="text-xs hidden sm:block text-pink-500">
             {product.department}
           </p>

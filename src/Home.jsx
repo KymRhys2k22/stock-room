@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 import React, { useState, useEffect } from "react";
 import { Grid, List } from "lucide-react";
 
@@ -17,7 +18,7 @@ export default function Home() {
 
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOrder, setSortOrder] = useState("default");
-  const [viewMode, setViewMode] = useState("card");
+  const [viewMode, setViewMode] = useState("grid");
 
   const API_URL = import.meta.env.VITE_API_KEY;
 
@@ -52,7 +53,7 @@ export default function Home() {
         console.error("Error fetching data:", error);
         setLoading(false);
       });
-  }, []);
+  }, [API_URL]);
 
   const filteredProducts = products
     .filter((product) => {
@@ -95,15 +96,15 @@ export default function Home() {
             />
           </div>
           <button
-            onClick={() => setViewMode(viewMode === "card" ? "grid" : "card")}
+            onClick={() => setViewMode(viewMode === "grid" ? "list" : "grid")}
             className="p-2 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none transition-colors"
             title={
-              viewMode === "card"
-                ? "Switch to Grid View"
-                : "Switch to Card View"
+              viewMode === "grid"
+                ? "Switch to List View"
+                : "Switch to Grid View"
             }>
-            {viewMode === "card" ? (<List className="w-5 h-5 text-slate-900 dark:text-gray-100" />
-              
+            {viewMode === "grid" ? (
+              <List className="w-5 h-5 text-slate-900 dark:text-gray-100" />
             ) : (
               <Grid className="w-5 h-5 text-slate-900 dark:text-gray-100" />
             )}
@@ -113,7 +114,9 @@ export default function Home() {
         {/* Product List */}
         <div
           className={
-            viewMode === "grid" ? "grid grid-cols-2 gap-3" : "space-y-3"
+            viewMode === "grid"
+              ? "grid grid-cols-2 gap-3 lg:grid-cols-3 "
+              : "space-y-3"
           }>
           {loading ? (
             <>

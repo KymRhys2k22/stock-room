@@ -17,11 +17,16 @@ export default function Fixture() {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOrder, setSortOrder] = useState("default");
-  const [viewMode, setViewMode] = useState("card");
+  const [viewMode, setViewMode] = useState("grid");
   const API_URL = import.meta.env.VITE_API_KEY;
 
   useEffect(() => {
-    // ... (fetch logic remains same)
+    if (!API_URL) {
+      console.error("API_URL is missing");
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
     fetch(`https://opensheet.elk.sh/${API_URL}/Master`)
       .then((response) => response.json())
@@ -51,7 +56,7 @@ export default function Fixture() {
         console.error("Error fetching data:", error);
         setLoading(false);
       });
-  }, [label]);
+  }, [label, API_URL]);
 
   const filteredProducts = products
     .filter((product) => {
@@ -94,16 +99,15 @@ export default function Fixture() {
             />
           </div>
           <button
-            onClick={() => setViewMode(viewMode === "grid" ? "card" : "grid")}
+            onClick={() => setViewMode(viewMode === "grid" ? "list" : "grid")}
             className="p-2 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none transition-colors"
             title={
-              viewMode === "card"
-                ? "Switch to Card View":
-"Switch to Grid View"
-                
+              viewMode === "grid"
+                ? "Switch to List View"
+                : "Switch to Grid View"
             }>
-            {viewMode === "card" ? (<List className="w-5 h-5 text-slate-900 dark:text-gray-100" />
-              
+            {viewMode === "grid" ? (
+              <List className="w-5 h-5 text-slate-900 dark:text-gray-100" />
             ) : (
               <Grid className="w-5 h-5 text-slate-900 dark:text-gray-100" />
             )}
@@ -113,7 +117,7 @@ export default function Fixture() {
         {/* Product List */}
         <main
           className={
-            viewMode === "grid" ? "space-y-3": "grid grid-cols-2 gap-3" 
+            viewMode === "grid" ? "grid grid-cols-2 gap-3" : "space-y-3"
           }>
           {loading ? (
             <>
@@ -122,8 +126,9 @@ export default function Fixture() {
               <SkeletonLoader />
               <SkeletonLoader />
               <SkeletonLoader />
+              <SkeletonLoader />
             </>
-          ) : viewMode === "card" ? (
+          ) : viewMode === "grid" ? (
             filteredProducts.map((product) => (
               <ImageGridView
                 key={product.id}
