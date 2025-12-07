@@ -12,7 +12,7 @@ import { DarkModeProvider } from "./contexts/DarkModeContext.jsx";
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 console.log(PUBLISHABLE_KEY);
-//const key = "pk_live_Y2xlcmsuZGFpc29wYXYuc3RvcmUk";
+const key = "pk_live_Y2xlcmsuZGFpc29wYXYuc3RvcmUk";
 
 /* if (!PUBLISHABLE_KEY) {
   throw new Error("Missing Publishable Key");
@@ -21,7 +21,7 @@ console.log(PUBLISHABLE_KEY);
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <DarkModeProvider>
-      <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
+      <ClerkProvider publishableKey={key} afterSignOutUrl="/">
         <BrowserRouter>
           <Routes>
             <Route element={<ProtectedRoute />}>
