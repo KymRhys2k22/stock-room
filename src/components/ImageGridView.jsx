@@ -56,7 +56,12 @@ export default function ImageGridView({ product, onClick }) {
           </span>
         </div>
         <div className="flex justify-between items-center mt-2">
-          <span className="text-lg font-bold text-slate-900 dark:text-gray-100">
+          <span
+            className={`${
+              product.price <= 68
+                ? "animate-pulse text-red-500 dark:text-red-500 underline"
+                : ""
+            }text-lg font-bold text-slate-900 dark:text-gray-100 `}>
             ₱{product.price.toFixed(2)}
           </span>
           <div className="flex items-center gap-2">
