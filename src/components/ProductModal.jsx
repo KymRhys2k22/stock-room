@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { X, Upload, Trash2, Save, Edit2, Loader2 } from "lucide-react";
+import {
+  X,
+  Upload,
+  Trash2,
+  Save,
+  Edit2,
+  Loader2,
+  ExternalLink,
+} from "lucide-react";
 import { getStatusColor } from "../utils/helpers";
 import imageCompression from "browser-image-compression";
 
@@ -298,25 +306,33 @@ export default function ProductModal({ product, onClose }) {
 
             {/* Editable Fields */}
             <div className="col-span-2 grid grid-cols-2 gap-4">
-              <a href={`/fixtures/${product.fixture}`} target="_blank">
+              <div className="flex flex-col">
                 <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider font-semibold">
                   Fixture
+                  <br />
                 </p>
-                {isEditing ? (
-                  <input
-                    type="text"
-                    value={editData.fixture}
-                    onChange={(e) =>
-                      setEditData({ ...editData, fixture: e.target.value })
-                    }
-                    className="w-full mt-1 px-2 py-1 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded focus:outline-none focus:ring-2 focus:ring-pink-500"
-                  />
-                ) : (
-                  <p className="text-base font-medium text-slate-900 dark:text-gray-100">
-                    {product.fixture}
-                  </p>
-                )}
-              </a>
+                <div className="flex items-center">
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      value={editData.fixture}
+                      onChange={(e) =>
+                        setEditData({ ...editData, fixture: e.target.value })
+                      }
+                      className="w-full mt-1 px-2 py-1 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded focus:outline-none focus:ring-2 focus:ring-pink-500"
+                    />
+                  ) : (
+                    <p className="text-base font-medium text-slate-900 dark:text-gray-100">
+                      {product.fixture}
+                    </p>
+                  )}
+                  {!isEditing && (
+                    <a href={`/fixtures/${product.fixture}`} target="_blank">
+                      <ExternalLink color="skyblue" className="ml-2 w-5 h-5" />
+                    </a>
+                  )}
+                </div>
+              </div>
               <div>
                 <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider font-semibold">
                   Box
