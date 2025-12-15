@@ -50,10 +50,11 @@ export default function ImageGridView({ product, onClick }) {
           <h3 className="lg:text-sm text-xs font-medium text-slate-900 dark:text-gray-100 truncate">
             {product.name}
           </h3>
-          <span className="text-xs text-gray-500 dark:text-gray-400">
-            {product.fixture}
+          <p className="bg-gray-200 px-1  text-xs text-gray-700 dark:bg-gray-700 dark:text-white text-center">
+            <span className="text-[0.6rem] font-semibold">BOX</span>
+            <br />
             {product.box}
-          </span>
+          </p>
         </div>
         <div className="flex justify-between items-center mt-2">
           <span

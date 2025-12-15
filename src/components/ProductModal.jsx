@@ -298,7 +298,7 @@ export default function ProductModal({ product, onClose }) {
 
             {/* Editable Fields */}
             <div className="col-span-2 grid grid-cols-2 gap-4">
-              <div>
+              <a href={`/fixtures/${product.fixture}`} target="_blank">
                 <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider font-semibold">
                   Fixture
                 </p>
@@ -316,7 +316,7 @@ export default function ProductModal({ product, onClose }) {
                     {product.fixture}
                   </p>
                 )}
-              </div>
+              </a>
               <div>
                 <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider font-semibold">
                   Box

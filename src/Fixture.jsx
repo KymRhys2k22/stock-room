@@ -119,7 +119,9 @@ export default function Fixture() {
         {/* Product List */}
         <main
           className={
-            viewMode === "grid" ? "grid grid-cols-2 gap-3" : "space-y-3"
+            viewMode === "grid"
+              ? "grid grid-cols-2 lg:grid-cols-3 gap-3"
+              : "space-y-3"
           }>
           {loading ? (
             <>

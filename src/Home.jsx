@@ -126,6 +126,7 @@ export default function Home() {
               <SkeletonLoader />
               <SkeletonLoader />
               <SkeletonLoader />
+              <SkeletonLoader />
             </>
           ) : viewMode === "grid" ? (
             filteredProducts.map((product) => (
