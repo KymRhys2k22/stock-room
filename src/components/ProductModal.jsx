@@ -7,6 +7,7 @@ import {
   Edit2,
   Loader2,
   ExternalLink,
+  Search,
 } from "lucide-react";
 import { getStatusColor } from "../utils/helpers";
 import imageCompression from "browser-image-compression";
@@ -291,9 +292,19 @@ export default function ProductModal({ product, onClose }) {
               <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider font-semibold">
                 UPC
               </p>
-              <p className="text-base font-medium text-slate-900 dark:text-gray-100">
-                {product.upc}
-              </p>
+              <div className="flex">
+                <p className="text-base font-medium text-slate-900 dark:text-gray-100">
+                  {product.upc}
+                </p>
+                <a
+                  href={`https://www.google.com/search?tbm=isch&q=${encodeURIComponent(
+                    product.upc
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer">
+                  <Search color="skyblue" className="ml-2 w-5 h-5" />
+                </a>
+              </div>
             </div>
             <div className="col-span-2">
               <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider font-semibold">

@@ -72,10 +72,62 @@ export default function FAB({ defaultFixture }) {
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState(null);
   const [uploadSuccess, setUploadSuccess] = useState(null);
+  const [imageExists, setImageExists] = useState(false);
+  const [checkingImage, setCheckingImage] = useState(false);
 
   const CLOUDINARY_CLOUD_NAME = "dqtldfxeh";
   const CLOUDINARY_UPLOAD_PRESET = "daisoimage";
   const CLOUDINARY_UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`;
+
+  // Helper to check if image exists
+  const checkImageExists = (url) => {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => resolve(true);
+      img.onerror = () => resolve(false);
+      img.src = url;
+    });
+  };
+
+  // Check for existing images when UPC changes
+  useEffect(() => {
+    if (!formData.upc) {
+      setImageExists(false);
+      setUploadError(null);
+      return;
+    }
+
+    const checkImages = async () => {
+      setCheckingImage(true);
+      setUploadError(null);
+
+      const url1 = `https://jpbulk.daisonet.com/cdn/shop/products/${formData.upc}_10_700x.jpg`;
+      const url2 = `https://res.cloudinary.com/dqtldfxeh/image/upload/products/${formData.upc}`;
+
+      try {
+        const [exists1, exists2] = await Promise.all([
+          checkImageExists(url1),
+          checkImageExists(url2),
+        ]);
+
+        if (exists1 || exists2) {
+          setImageExists(true);
+          setUploadError(
+            "Image already exists for this product. Upload disabled."
+          );
+        } else {
+          setImageExists(false);
+        }
+      } catch (err) {
+        console.error("Error checking images:", err);
+      } finally {
+        setCheckingImage(false);
+      }
+    };
+
+    const timer = setTimeout(checkImages, 1000); // 1s debounce
+    return () => clearTimeout(timer);
+  }, [formData.upc]);
 
   const handleImageUpload = async (e) => {
     const file = e.target.files?.[0];
@@ -83,6 +135,11 @@ export default function FAB({ defaultFixture }) {
 
     if (!formData.upc) {
       setUploadError("Please enter a UPC first.");
+      return;
+    }
+
+    if (imageExists) {
+      setUploadError("Image already exists. Upload disabled.");
       return;
     }
 
@@ -272,9 +329,16 @@ export default function FAB({ defaultFixture }) {
                 <div className="flex items-center gap-2">
                   <label
                     className={`flex-1 flex items-center justify-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 cursor-pointer ${
-                      !formData.upc ? "opacity-50 cursor-not-allowed" : ""
+                      !formData.upc || checkingImage || imageExists
+                        ? "opacity-50 cursor-not-allowed"
+                        : ""
                     }`}>
-                    {uploading ? (
+                    {checkingImage ? (
+                      <span className="flex items-center text-gray-500">
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                        Checking...
+                      </span>
+                    ) : uploading ? (
                       <Loader2 className="w-5 h-5 animate-spin text-pink-500" />
                     ) : (
                       <>
@@ -286,7 +350,12 @@ export default function FAB({ defaultFixture }) {
                       type="file"
                       accept="image/*"
                       onChange={handleImageUpload}
-                      disabled={uploading || !formData.upc}
+                      disabled={
+                        uploading ||
+                        !formData.upc ||
+                        checkingImage ||
+                        imageExists
+                      }
                       className="hidden"
                     />
                   </label>

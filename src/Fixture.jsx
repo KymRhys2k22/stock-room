@@ -82,6 +82,17 @@ export default function Fixture() {
       return 0;
     });
 
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 font-sans text-gray-900 dark:text-gray-100 pb-24">
+        <div className="flex flex-row gap-2">
+          <div className="w-4 h-4 rounded-full bg-pink-400 animate-bounce [animation-delay:.7s]"></div>
+          <div className="w-4 h-4 rounded-full bg-pink-400 animate-bounce [animation-delay:.3s]"></div>
+          <div className="w-4 h-4 rounded-full bg-pink-400 animate-bounce [animation-delay:.7s]"></div>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 font-sans text-gray-900 dark:text-gray-100 pb-24">
       <Header
@@ -160,6 +171,9 @@ export default function Fixture() {
         product={selectedProduct}
         onClose={() => setSelectedProduct(null)}
       />
+      {products.length === 0 && (
+        <p className="text-center pt-4 text-gray-500">No products found</p>
+      )}
       <Footer />
     </div>
   );
