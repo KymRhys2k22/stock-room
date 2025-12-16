@@ -21,7 +21,7 @@ const key = "pk_live_Y2xlcmsuZGFpc29wYXYuc3RvcmUk";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <DarkModeProvider>
-      <ClerkProvider publishableKey={key} afterSignOutUrl="/">
+      <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
         <BrowserRouter>
           <Routes>
             <Route element={<ProtectedRoute />}>
