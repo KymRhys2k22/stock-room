@@ -12,6 +12,7 @@ const ALLOWED_EMAILS = [
   "kymrhys@gmail.com",
   "daiso202sm@daiso.com.ph",
   "eiframcadnis@gmail.com",
+"costiniano.roy@gmail.com"
 ];
 
 export default function ProtectedRoute() {
