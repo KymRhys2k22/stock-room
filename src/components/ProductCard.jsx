@@ -25,7 +25,7 @@ export default function ProductCard({ product, onClick }) {
   };
 
   return (
-    <section className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm">
+    <section className="product-card bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm">
       <section className="flex gap-4">
         <div
           className="w-20 h-20 bg-gray-200  rounded-lg overflow-hidden flex-shrink-0 cursor-pointer relative"

@@ -1,5 +1,4 @@
-/* eslint-disable react-hooks/set-state-in-effect */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Grid, List } from "lucide-react";
 
 import FAB from "./components/FAB";
@@ -11,6 +10,13 @@ import ProductModal from "./components/ProductModal";
 import SkeletonLoader from "./components/SkeletonLoader";
 import Footer from "./components/Footer";
 import CapybaraLoader from "./components/CapybaraLoader";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Snowfall from "react-snowfall";
+gsap.registerPlugin(useGSAP, ScrollTrigger);
+import "@divriots/flying-santa";
+import { cleanup } from "@divriots/flying-santa";
 
 export default function Home() {
   const [products, setProducts] = useState([]);
@@ -20,11 +26,70 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOrder, setSortOrder] = useState("default");
   const [viewMode, setViewMode] = useState("grid");
+  const containerRef = useRef();
 
   const API_URL = import.meta.env.VITE_API_KEY;
 
+  /*  useGSAP(
+    () => {
+      // Only animate if loading is false
+      if (!loading) {
+        gsap.to(".product-card", {
+          scrollTrigger: ".product-card", // start the animation when ".box" enters the viewport (once)
+          x: 500,
+        });
+      }
+    },
+    { scope: containerRef, dependencies: [loading] }
+  ); */
+  useGSAP(
+    () => {
+      if (loading) return;
+
+      // 🔥 Kill old ScrollTriggers in this scope
+      ScrollTrigger.getAll().forEach((st) => st.kill());
+
+      const boxes = gsap.utils.toArray(".product-card");
+
+      boxes.forEach((box) => {
+        gsap.fromTo(
+          box,
+          {
+            opacity: 0.3,
+            y: 50,
+          },
+          {
+            opacity: 0.8,
+            y: 0,
+            immediateRender: true, // IMPORTANT
+
+            scrollTrigger: {
+              trigger: box,
+              scrub: 2,
+              start: "top 70%",
+              end: "bottom 80%",
+              invalidateOnRefresh: true,
+            },
+          }
+        );
+      });
+
+      ScrollTrigger.refresh();
+    },
+    { scope: containerRef, dependencies: [loading, sortOrder] }
+  );
+
   useEffect(() => {
-    setLoading(true);
+    // cleanup in case something already exists
+    cleanup();
+
+    return () => {
+      // remove santa when component unmounts
+      cleanup();
+    };
+  }, []);
+
+  useEffect(() => {
     fetch(`https://opensheet.elk.sh/${API_URL}/Master`)
       .then((response) => response.json())
       .then((data) => {
@@ -89,7 +154,24 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 font-sans text-gray-900 dark:text-gray-100 pb-24">
+    <div
+      r
+      className="min-h-screen bg-gray-50 dark:bg-gray-900 font-sans text-gray-900 dark:text-gray-100 pb-24">
+      <Snowfall
+        style={{
+          position: "fixed",
+          width: "100vw",
+          height: "100vh",
+        }}
+      />
+
+      <flying-santa
+        change-speed="3000"
+        speed="1.2"
+        presents-distance="100"
+        presents-interval="80"
+        presents-drop-speed="10"></flying-santa>
+
       <Header
         title="Daiso Japan Stock Room Management System"
         sortOrder={sortOrder}
@@ -123,6 +205,7 @@ export default function Home() {
 
         {/* Product List */}
         <div
+          ref={containerRef}
           className={
             viewMode === "grid"
               ? "grid grid-cols-2 gap-3 lg:grid-cols-3 "

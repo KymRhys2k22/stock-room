@@ -66,7 +66,7 @@ export default function Header({ title, headerText, sortOrder, setSortOrder }) {
   const text = title;
 
   return (
-    <header className="flex lg:px-96 shadow-sm md:px-10 items-center justify-between px-4 py-4 bg-gray-50 dark:bg-gray-900 sticky top-0 z-10 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-15 dark:bg-opacity-90 border border-gray-100 dark:border-gray-800">
+    <header className="flex lg:px-96 shadow-sm md:px-10 items-center justify-between px-4 py-4 bg-gray-50 dark:bg-gray-900 sticky top-0 z-50 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-15 dark:bg-opacity-90 border border-gray-100 dark:border-gray-800">
       <div className="relative" ref={menuRef}>
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}

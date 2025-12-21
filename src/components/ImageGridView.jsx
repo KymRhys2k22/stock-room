@@ -26,7 +26,8 @@ export default function ImageGridView({ product, onClick }) {
 
   return (
     <div
-      className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm cursor-pointer hover:shadow-md transition-shadow"
+      id="card"
+      className="product-card opacity-80 bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm cursor-pointer hover:shadow-md transition-shadow"
       onClick={onClick}>
       <div className="relative w-full aspect-square bg-gray-200">
         {/* Loading animation */}
@@ -46,7 +47,7 @@ export default function ImageGridView({ product, onClick }) {
         />
       </div>
       <div className="p-3">
-        <div className="flex justify-between items-center">
+        <div className="flex  justify-between items-center">
           <h3 className="lg:text-sm text-xs font-medium text-slate-900 dark:text-gray-100 truncate">
             {product.name}
           </h3>

@@ -12,11 +12,15 @@
   },
   "dependencies": {
     "@clerk/clerk-react": "^5.57.0",
+    "@divriots/flying-santa": "^1.0.0",
+    "@gsap/react": "^2.1.2",
     "browser-image-compression": "^2.0.2",
+    "gsap": "^3.14.2",
     "lucide-react": "^0.554.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "react-router-dom": "^7.9.6"
+    "react-router-dom": "^7.9.6",
+    "react-snowfall": "^2.4.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",

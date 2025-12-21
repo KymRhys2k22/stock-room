@@ -52,9 +52,11 @@ function doPost(e) {
     // Find existing row by UPC + FIXTURE
     const lastRow = sheet.getLastRow();
     let rowIndex = -1;
-    const targetFixture = String(data.fixture || "")
-      .trim()
-      .toLowerCase();
+
+    // Use original_fixture if provided (for updates), otherwise fixture
+    // This allows us to find the row even if we're changing the fixture name
+    const lookupFixture = data.original_fixture || data.fixture || "";
+    const targetFixture = String(lookupFixture).trim().toLowerCase();
     const targetUpc = upc.toLowerCase();
 
     if (lastRow > 1) {

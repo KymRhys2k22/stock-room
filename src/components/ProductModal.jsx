@@ -30,7 +30,7 @@ export default function ProductModal({ product, onClose }) {
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState("");
 
-  const APPS_SCRIPT_URL = `https://script.google.com/macros/s/AKfycbzQsTWyNHx7Z8QDEkQaBEHJ_0XzsYPxd8v8a0bFyEm6ZsC3q1stXRuq7a5k7A5paEHQ/exec`;
+  const APPS_SCRIPT_URL = `https://script.google.com/macros/s/AKfycbx3LAypgWtw1XGxTBwxeC9TQeOPl_Ud2SGh8fZdTwChFpvc8hTXfDvPC7qjfEFEimCh/exec`;
 
   // Reset states when product changes
   useEffect(() => {
@@ -127,6 +127,8 @@ export default function ProductModal({ product, onClose }) {
       formDataParams.append("fixture", editData.fixture);
       formDataParams.append("qty", editData.qty);
       formDataParams.append("box", editData.box);
+      // Send original fixture so backend can find the row if we changed it
+      formDataParams.append("original_fixture", product.fixture);
 
       const res = await fetch(APPS_SCRIPT_URL, {
         method: "POST",

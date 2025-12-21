@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/set-state-in-effect */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { Plus, Grid, List } from "lucide-react";
 import FAB from "./components/FAB";
@@ -11,6 +11,14 @@ import ProductModal from "./components/ProductModal";
 import SkeletonLoader from "./components/SkeletonLoader";
 import Footer from "./components/Footer";
 import CapybaraLoader from "./components/CapybaraLoader";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Snowfall from "react-snowfall";
+
+import { cleanup } from "@divriots/flying-santa";
+gsap.registerPlugin(useGSAP, ScrollTrigger);
+import "@divriots/flying-santa";
 
 export default function Fixture() {
   const { label } = useParams();
@@ -20,7 +28,55 @@ export default function Fixture() {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOrder, setSortOrder] = useState("default");
   const [viewMode, setViewMode] = useState("grid");
+  const FixtureContainerRef = useRef(null);
   const API_URL = import.meta.env.VITE_API_KEY;
+
+  useEffect(() => {
+    // cleanup in case something already exists
+    cleanup();
+
+    return () => {
+      // remove santa when component unmounts
+      cleanup();
+    };
+  }, []);
+
+  useGSAP(
+    () => {
+      if (loading) return;
+
+      // 🔥 Kill old ScrollTriggers in this scope
+      ScrollTrigger.getAll().forEach((st) => st.kill());
+
+      const boxes = gsap.utils.toArray(".product-card");
+
+      boxes.forEach((box) => {
+        gsap.fromTo(
+          box,
+          {
+            opacity: 0.3,
+            y: 50,
+          },
+          {
+            opacity: 0.8,
+            y: 0,
+            immediateRender: true, // IMPORTANT
+
+            scrollTrigger: {
+              trigger: box,
+              scrub: 2,
+              start: "top 70%",
+              end: "bottom 80%",
+              invalidateOnRefresh: true,
+            },
+          }
+        );
+      });
+
+      ScrollTrigger.refresh();
+    },
+    { scope: FixtureContainerRef, dependencies: [loading, sortOrder] }
+  );
 
   useEffect(() => {
     if (!API_URL) {
@@ -93,6 +149,20 @@ export default function Fixture() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 font-sans text-gray-900 dark:text-gray-100 pb-24">
+      <Snowfall
+        style={{
+          position: "fixed",
+          width: "100vw",
+          height: "100vh",
+        }}
+      />
+      <flying-santa
+        change-speed="3000"
+        speed="1.2"
+        presents-distance="100"
+        presents-interval="80"
+        presents-drop-speed="10"></flying-santa>
+
       <Header
         headerText="FIXTURE"
         title={label}
@@ -127,6 +197,7 @@ export default function Fixture() {
 
         {/* Product List */}
         <main
+          ref={FixtureContainerRef}
           className={
             viewMode === "grid"
               ? "grid grid-cols-2 lg:grid-cols-3 gap-3"

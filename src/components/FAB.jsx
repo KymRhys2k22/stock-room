@@ -4,7 +4,7 @@ import imageCompression from "browser-image-compression";
 
 // REPLACE THIS WITH YOUR DEPLOYED GOOGLE APPS SCRIPT WEB APP URL
 const APPS_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbzQsTWyNHx7Z8QDEkQaBEHJ_0XzsYPxd8v8a0bFyEm6ZsC3q1stXRuq7a5k7A5paEHQ/exec";
+  "https://script.google.com/macros/s/AKfycbx3LAypgWtw1XGxTBwxeC9TQeOPl_Ud2SGh8fZdTwChFpvc8hTXfDvPC7qjfEFEimCh/exec";
 const DATA_URL =
   "https://opensheet.elk.sh/1sZuuC4o44rh-yRYaeeRFRo4HeOhMj6x6y4ux96D5nok/Master";
 
