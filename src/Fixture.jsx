@@ -14,33 +14,29 @@ import CapybaraLoader from "./components/CapybaraLoader";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Snowfall from "react-snowfall";
 
-import { cleanup } from "@divriots/flying-santa";
 gsap.registerPlugin(useGSAP, ScrollTrigger);
-import "@divriots/flying-santa";
 
+/**
+ * Fixture Component
+ *
+ * A specialized product view that filters products by a specific store fixture (e.g., "A1", "Gondola 2").
+ * Identical features to Home (Sort, Search, View Modes) but scoped to one fixture.
+ * Uses URL parameter `label` to determine which fixture to display.
+ */
 export default function Fixture() {
-  const { label } = useParams();
+  // --- State & Routing ---
+  const { label } = useParams(); // Fixture ID from URL
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOrder, setSortOrder] = useState("default");
   const [viewMode, setViewMode] = useState("grid");
-  const FixtureContainerRef = useRef(null);
+  const FixtureContainerRef = useRef(null); // Ref for GSAP animations
   const API_URL = import.meta.env.VITE_API_KEY;
 
-  useEffect(() => {
-    // cleanup in case something already exists
-    cleanup();
-
-    return () => {
-      // remove santa when component unmounts
-      cleanup();
-    };
-  }, []);
-
+  // GSAP Animation for product entry (Scoped to Fixture container)
   useGSAP(
     () => {
       if (loading) return;
@@ -51,26 +47,19 @@ export default function Fixture() {
       const boxes = gsap.utils.toArray(".product-card");
 
       boxes.forEach((box) => {
-        gsap.fromTo(
-          box,
-          {
-            opacity: 0.3,
-            y: 50,
-          },
-          {
-            opacity: 0.8,
-            y: 0,
-            immediateRender: true, // IMPORTANT
+        gsap.from(box, {
+          y: 50,
 
-            scrollTrigger: {
-              trigger: box,
-              scrub: 2,
-              start: "top 70%",
-              end: "bottom 80%",
-              invalidateOnRefresh: true,
-            },
-          }
-        );
+          immediateRender: true, // IMPORTANT
+
+          scrollTrigger: {
+            trigger: box,
+            scrub: 2,
+            start: "top 70%",
+            end: "bottom 80%",
+            invalidateOnRefresh: true,
+          },
+        });
       });
 
       ScrollTrigger.refresh();
@@ -142,27 +131,13 @@ export default function Fixture() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 font-sans text-gray-900 dark:text-gray-100 pb-24">
-        <CapybaraLoader />
+        <img className="animate-bounce" src="/daisopav.webp" alt="" />
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 font-sans text-gray-900 dark:text-gray-100 pb-24">
-      <Snowfall
-        style={{
-          position: "fixed",
-          width: "100vw",
-          height: "100vh",
-        }}
-      />
-      <flying-santa
-        change-speed="3000"
-        speed="1.2"
-        presents-distance="100"
-        presents-interval="80"
-        presents-drop-speed="10"></flying-santa>
-
       <Header
         headerText="FIXTURE"
         title={label}

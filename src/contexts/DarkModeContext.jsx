@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 
 const DarkModeContext = createContext();
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useDarkMode = () => {
   const context = useContext(DarkModeContext);
   if (!context) {

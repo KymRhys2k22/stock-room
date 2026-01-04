@@ -1,4 +1,10 @@
 import React from "react";
+/**
+ * Footer Component
+ *
+ * Simple footer displaying copyright and version information.
+ * Placed at the bottom of the main layout.
+ */
 export default function Footer() {
   const currentYear = new Date().getFullYear();
   return (

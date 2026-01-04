@@ -19,18 +19,32 @@ import {
 } from "@clerk/clerk-react";
 import { useDarkMode } from "../contexts/DarkModeContext";
 
+/**
+ * Header Component
+ *
+ * Top navigation bar containing:
+ * - Hamburger menu (Navigation links, Dark mode toggle, User auth)
+ * - Page Title
+ * - Sort options dropdown
+ *
+ * @param {string} title - Main title text
+ * @param {string} headerText - Additional header text prefix
+ * @param {string} sortOrder - Current sort state
+ * @param {Function} setSortOrder - State setter for sort order
+ */
 export default function Header({ title, headerText, sortOrder, setSortOrder }) {
+  // --- Hooks & State ---
   const { user } = useUser();
-
   const { signOut } = useClerk();
   const navigate = useNavigate();
   const { isDarkMode, toggleDarkMode } = useDarkMode();
 
-  const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = React.useState(false); // Sort dropdown visibility
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false); // Hamburger menu visibility
   const dropdownRef = React.useRef(null);
   const menuRef = React.useRef(null);
 
+  // Handle clicks outside menus to close them
   React.useEffect(() => {
     function handleClickOutside(event) {
       // Logic to ignore clicks if they are inside Clerk elements (portals)
@@ -51,6 +65,8 @@ export default function Header({ title, headerText, sortOrder, setSortOrder }) {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [dropdownRef, menuRef]);
+
+  // --- Handlers ---
 
   const handleSortChange = (value) => {
     setSortOrder(value);

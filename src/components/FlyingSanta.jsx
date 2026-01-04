@@ -1,30 +1,30 @@
-import { useEffect } from "react";
+import React from "react";
 import "@divriots/flying-santa";
-import { cleanup } from "@divriots/flying-santa";
 
-export default function FlyingSanta({
-  changeSpeed = 3000,
-  speed = 1,
-  presentsDistance = 120,
-  presentsInterval = 80,
-  presentsDropSpeed = 1,
-}) {
-  useEffect(() => {
-    // cleanup in case something already exists
-    cleanup();
-
-    return () => {
-      // remove santa when component unmounts
-      cleanup();
-    };
-  }, []);
-
+/**
+ * FlyingSanta Component
+ *
+ * Seasonal decoration component using a custom web component.
+ * Renders an animated Santa flying across the screen.
+ * Wrapped in React component for easier integration.
+ */
+function FlyingSanta() {
   return (
-    <flying-santa
-      change-speed={changeSpeed}
-      speed={speed}
-      presents-distance={presentsDistance}
-      presents-interval={presentsInterval}
-      presents-drop-speed={presentsDropSpeed}></flying-santa>
+    <>
+      <flying-santa
+        style={{
+          position: "fixed",
+        }}
+        speed="1"
+        change-speed="3000"
+        presents-distance="100"
+        presents-interval="100"
+        presents-drop-speed="1"
+        presents-number="1"
+        presents-size="1"
+        presents-color="pink"></flying-santa>
+    </>
   );
 }
+
+export default FlyingSanta;

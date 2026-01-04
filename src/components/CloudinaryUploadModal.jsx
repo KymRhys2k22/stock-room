@@ -5,11 +5,24 @@ const CLOUDINARY_CLOUD_NAME = "dqtldfxeh";
 const CLOUDINARY_UPLOAD_PRESET = "daisoimage";
 const CLOUDINARY_UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`;
 
+/**
+ * CloudinaryUploadModal Component
+ *
+ * Special modal for uploading ADDITIONAL images for a specific product.
+ * Allows uploading multiple images to Cloudinary which are named as
+ * {sku}-1, {sku}-2, etc. and replacing existing images.
+ *
+ * @param {string} sku - Product SKU/UPC used for naming files
+ * @param {Function} onClose - Handler to close modal
+ */
 export default function CloudinaryUploadModal({ sku, onClose }) {
   const [uploadedImages, setUploadedImages] = useState([]);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState(null);
 
+  /**
+   * Handle multiple file selection for upload
+   */
   const handleFileChange = async (e) => {
     const files = Array.from(e.target.files);
     if (files.length === 0) return;

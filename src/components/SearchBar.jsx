@@ -1,6 +1,15 @@
 import React from "react";
 import { Search } from "lucide-react";
 
+/**
+ * SearchBar Component
+ *
+ * Reusable search input component.
+ *
+ * @param {string} searchQuery - Current search value
+ * @param {Function} setSearchQuery - State setter for search query
+ * @param {string} placeholder - Input placeholder text
+ */
 export default function SearchBar({
   searchQuery,
   setSearchQuery,

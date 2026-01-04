@@ -8,13 +8,24 @@ import {
 } from "@clerk/clerk-react";
 import { Outlet } from "react-router-dom";
 
+// Email allowlist for access control
 const ALLOWED_EMAILS = [
   "kymrhys@gmail.com",
   "daiso202sm@daiso.com.ph",
   "eiframcadnis@gmail.com",
-"costiniano.roy@gmail.com"
+  "costiniano.roy@gmail.com",
 ];
 
+/**
+ * ProtectedRoute Component
+ *
+ * Guards routes against unauthorized access.
+ * Checks two conditions:
+ * 1. User is signed in (via Clerk)
+ * 2. User's email is in the ALLOWED_EMAILS list
+ *
+ * Renders Access Denied screen if email doesn't match.
+ */
 export default function ProtectedRoute() {
   const { user } = useUser();
   const { signOut } = useClerk();

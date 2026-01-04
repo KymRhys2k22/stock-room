@@ -91,7 +91,6 @@ export default function CloudinaryImageUploader() {
     const formData = new FormData();
 
     // Generate public_id based on SKU and index
-    const timestamp = Date.now();
     const publicId =
       uploadedImages.length === 0 && index === 0
         ? sku
@@ -198,13 +197,6 @@ export default function CloudinaryImageUploader() {
    */
   const handleRemove = (imageId) => {
     setUploadedImages((prev) => prev.filter((img) => img.id !== imageId));
-  };
-
-  /**
-   * Generate Cloudinary URL for a given SKU
-   */
-  const getCloudinaryUrl = (publicId) => {
-    return `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload/${publicId}.png`;
   };
 
   return (

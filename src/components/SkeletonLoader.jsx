@@ -1,5 +1,11 @@
 import React from "react";
 
+/**
+ * SkeletonLoader Component
+ *
+ * Placeholder component displayed while product data is being fetched.
+ * Mimics the shape of a ProductCard to reduce layout partial shift.
+ */
 export default function SkeletonLoader() {
   return (
     <section className="product-card bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm">

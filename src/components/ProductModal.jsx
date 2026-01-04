@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   X,
   Upload,
@@ -11,22 +11,40 @@ import {
 } from "lucide-react";
 import { getStatusColor } from "../utils/helpers";
 import imageCompression from "browser-image-compression";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+gsap.registerPlugin(useGSAP);
 
 const CLOUDINARY_CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
 const CLOUDINARY_UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
 
 const CLOUDINARY_UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`;
 
+/**
+ * ProductModal Component
+ *
+ * Displays detailed information about a selected product.
+ * Provides functionality to:
+ * - View product details (Image, Price, Inventory)
+ * - Edit editable fields (Fixture, Box, Qty)
+ * - Delete the product
+ * - Upload/Update product image
+ *
+ * @param {Object} product - The product object to display
+ * @param {Function} onClose - Handler to close the modal
+ */
 export default function ProductModal({ product, onClose }) {
+  // --- State Management ---
   const [imgSrc, setImgSrc] = useState(product?.image || "");
-  const [fallbackAttempt, setFallbackAttempt] = useState(0);
+  const [fallbackAttempt, setFallbackAttempt] = useState(0); // Tracks image load error retries (0=orig, 1=cloud, 2=placeholder)
   const [imageLoaded, setImageLoaded] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState(null);
+  const modalRef = useRef(null);
 
   // CRUD States
-  const [isEditing, setIsEditing] = useState(false);
-  const [editData, setEditData] = useState({ fixture: "", qty: "" });
+  const [isEditing, setIsEditing] = useState(false); // Toggle edit mode
+  const [editData, setEditData] = useState({ fixture: "", qty: "" }); // Form state for edits
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -49,6 +67,11 @@ export default function ProductModal({ product, onClose }) {
     }
   }, [product]);
 
+  /**
+   * Handle image load errors with progressive fallbacks
+   * 1. Try fetching from Cloudinary derived url
+   * 2. Fallback to generic placeholder
+   */
   const handleImageError = () => {
     if (fallbackAttempt === 0) {
       // First fallback: try Cloudinary
@@ -63,7 +86,14 @@ export default function ProductModal({ product, onClose }) {
       setImageLoaded(true); // Stop showing loading animation for placeholder
     }
   };
-
+  useGSAP(() => {
+    gsap.from(modalRef, {
+      scale: 0.5,
+      opacity: 0,
+      duration: 0.5,
+      ease: "power4.out",
+    });
+  }, [product]);
   const handleImageUpload = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -104,7 +134,7 @@ export default function ProductModal({ product, onClose }) {
 
       const data = await response.json();
 
-      // Update image with the new uploaded URL
+      //##Update image with the new uploaded URL
       setImgSrc(data.secure_url);
       setFallbackAttempt(1); // Set to Cloudinary fallback state
       setImageLoaded(false);
@@ -116,6 +146,9 @@ export default function ProductModal({ product, onClose }) {
     }
   };
 
+  /**
+   * Update product details in Google Sheets
+   */
   const handleUpdate = async () => {
     setSubmitting(true);
     setMessage("");
@@ -187,6 +220,7 @@ export default function ProductModal({ product, onClose }) {
 
   return (
     <div
+      ref={modalRef}
       className="fixed inset-0 bg-black/80 dark:bg-black/90 z-50 flex items-center justify-center p-4"
       onClick={onClose}>
       <div

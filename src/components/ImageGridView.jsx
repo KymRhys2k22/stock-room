@@ -1,21 +1,36 @@
 import React, { useState } from "react";
 import { getStatusColor } from "../utils/helpers";
 
+/**
+ * ImageGridView Component
+ *
+ * A simplified product card designed for the Grid View layout.
+ * Visual-first representation of a product with essential info.
+ * Includes progressive image loading and fallback logic.
+ *
+ * @param {Object} product - Product data object
+ * @param {Function} onClick - Click handler to open product details
+ */
 export default function ImageGridView({ product, onClick }) {
+  // --- State Management ---
   const [imgSrc, setImgSrc] = useState(product.image);
-  const [fallbackAttempt, setFallbackAttempt] = useState(0);
+  const [fallbackAttempt, setFallbackAttempt] = useState(0); // 0=Primary, 1=Cloudinary, 2=Placeholder
   const [imageLoaded, setImageLoaded] = useState(false);
 
+  /**
+   * progressive image fallback handler
+   * Tries alternative sources if the main image fails to load.
+   */
   const handleImageError = () => {
     if (fallbackAttempt === 0) {
-      // First fallback: try Cloudinary
+      // First fallback: try Cloudinary directly using UPC
       setFallbackAttempt(1);
       setImageLoaded(false);
       setImgSrc(
         `https://res.cloudinary.com/dqtldfxeh/image/upload/products/${product.upc}`
       );
     } else if (fallbackAttempt === 1) {
-      // Second fallback: show placeholder
+      // Second fallback: show "Upload Image" placeholder
       setFallbackAttempt(2);
       setImgSrc(
         "https://placehold.co/600x400/e2e8f0/94a3b8?text=Upload+\\n+Image"

@@ -2,6 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Home, AlertCircle } from "lucide-react";
 
+/**
+ * NotFound Component
+ *
+ * 404 Error page displayed when navigating to invalid routes.
+ * Provides a link back to the home page.
+ */
 const NotFound = () => {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col items-center justify-center p-4">

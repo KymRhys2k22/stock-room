@@ -1,26 +1,34 @@
 import React, { useState } from "react";
 import { getStatusColor } from "../utils/helpers";
 
+/**
+ * ProductCard Component
+ *
+ * Detailed card view for products, used specifically in the "List View" mode.
+ * Displays larger image, full details, and prominent price/quantity.
+ *
+ * @param {Object} product - Product data
+ * @param {Function} onClick - Click handler
+ */
 export default function ProductCard({ product, onClick }) {
+  // --- Progressive Image Loading ---
   const [imgSrc, setImgSrc] = useState(product.image);
   const [fallbackAttempt, setFallbackAttempt] = useState(0);
   const [imageLoaded, setImageLoaded] = useState(false);
 
   const handleImageError = () => {
     if (fallbackAttempt === 0) {
-      // First fallback: try Cloudinary
       setFallbackAttempt(1);
       setImageLoaded(false);
       setImgSrc(
         `https://res.cloudinary.com/dqtldfxeh/image/upload/products/${product.upc}`
       );
     } else if (fallbackAttempt === 1) {
-      // Second fallback: show placeholder
       setFallbackAttempt(2);
       setImgSrc(
         "https://placehold.co/600x400/e2e8f0/94a3b8?text=Upload+\n+Image"
       );
-      setImageLoaded(true); // Placeholder is always "loaded"
+      setImageLoaded(true);
     }
   };
 

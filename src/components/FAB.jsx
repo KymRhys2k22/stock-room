@@ -8,13 +8,25 @@ const APPS_SCRIPT_URL =
 const DATA_URL =
   "https://opensheet.elk.sh/1sZuuC4o44rh-yRYaeeRFRo4HeOhMj6x6y4ux96D5nok/Master";
 
+/**
+ * FAB (Floating Action Button) Component
+ *
+ * Primary action button for adding new products to the inventory.
+ * Contains a modal form for:
+ * - Entering product details (UPC, Fixture, Box, Qty)
+ * - Uploading product images to Cloudinary
+ * - Submitting data to Google Sheets backend
+ *
+ * @param {string} defaultFixture - Auto-fill fixture if provided
+ */
 export default function FAB({ defaultFixture }) {
-  const [isOpen, setIsOpen] = useState(false);
+  // --- State Management ---
+  const [isOpen, setIsOpen] = useState(false); // Modal visibility
   // Mode is always 'create' now
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState([]); // Cache for duplicate checking
   const [, setLoading] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
-  const [message, setMessage] = useState("");
+  const [submitting, setSubmitting] = useState(false); // Form submission state
+  const [message, setMessage] = useState(""); // Feedback message
 
   const [formData, setFormData] = useState({
     upc: "",
@@ -30,7 +42,7 @@ export default function FAB({ defaultFixture }) {
     }
   }, [defaultFixture]);
 
-  // Fetch data on mount
+  // Fetch data on mount for duplicate checking
   useEffect(() => {
     fetchData();
   }, []);
@@ -48,11 +60,13 @@ export default function FAB({ defaultFixture }) {
     }
   };
 
+  // --- Helper Functions ---
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
 
-    // Auto-fill/Check if UPC+Fixture exists
+    // Auto-fill/Check if UPC+Fixture exists to prevent duplicates
     const currentUpc = name === "upc" ? value : formData.upc;
     const currentFixture = name === "fixture" ? value : formData.fixture;
 
@@ -69,10 +83,11 @@ export default function FAB({ defaultFixture }) {
     }
   };
 
+  // --- Image Upload State ---
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState(null);
   const [uploadSuccess, setUploadSuccess] = useState(null);
-  const [imageExists, setImageExists] = useState(false);
+  const [imageExists, setImageExists] = useState(false); // Prevents re-upload if image exists
   const [checkingImage, setCheckingImage] = useState(false);
 
   const CLOUDINARY_CLOUD_NAME = "dqtldfxeh";
@@ -129,6 +144,10 @@ export default function FAB({ defaultFixture }) {
     return () => clearTimeout(timer);
   }, [formData.upc]);
 
+  /**
+   * Upload image to Cloudinary
+   * Compresses image before upload and uses UPC as public_id
+   */
   const handleImageUpload = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -187,6 +206,9 @@ export default function FAB({ defaultFixture }) {
     }
   };
 
+  /**
+   * Submit new product data to Google Sheets
+   */
   const handleSubmit = async () => {
     if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL === "YOUR_APPS_SCRIPT_URL_HERE") {
       alert("Please configure the APPS_SCRIPT_URL in FAB.jsx");
@@ -198,6 +220,7 @@ export default function FAB({ defaultFixture }) {
 
     try {
       const formDataParams = new URLSearchParams();
+      // Action 'create' tells backend to add a new row
       formDataParams.append("action", "create");
       formDataParams.append("upc", formData.upc);
       formDataParams.append("fixture", formData.fixture);
